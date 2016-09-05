@@ -1,0 +1,24 @@
+Particle game
+================================================================================================
+1. Problem :
+can't compile main program
+1. Solution:
+g++ main.cpp -o opengl1 -lGL -lc -lm -lglut -lGLU
+done
+================================================================================================
+2. Problem:
+to compile i have to find special command
+create cmake file
+2. Solution:
+cmake file is created, now lets move on to adding new class fir this
+done
+================================================================================================
+3. Problem:
+No scv for my project
+3. Solution:
+init git repo
+4. Problem:
+I do not know what cmake and openGL function does
+
+
+

@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++14 -g -Wall   CMakeFiles/Particles.dir/main.cpp.o  -o Particles -rdynamic -lGLU -lGL -lglut -lXmu -lXi 
