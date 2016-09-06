@@ -1,3 +1,0 @@
-/home/gravoo/Projects/Particles/build/CMakeFiles/edit_cache.dir
-/home/gravoo/Projects/Particles/build/CMakeFiles/rebuild_cache.dir
-/home/gravoo/Projects/Particles/build/CMakeFiles/Particles.dir
