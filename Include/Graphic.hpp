@@ -19,6 +19,7 @@ public:
           glutSwapBuffers();
           glutPostRedisplay();
     }
+    void doSomething();
 
 private:
         int m_windowHandle;

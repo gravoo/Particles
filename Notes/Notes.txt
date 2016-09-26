@@ -17,8 +17,13 @@ done
 No scv for my project
 3. Solution:
 init git repo
+================================================================================================
 4. Problem:
 I do not know what cmake and openGL function does
+Important command for cmake file: cmake -H. -Bbuild  && cmake --build build -- -j8
+still dont know what openGL function does
+================================================================================================
+5. openGl puzzle
 
 
 

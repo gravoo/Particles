@@ -1,6 +1,7 @@
 #include <Graphic.hpp>
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
 
 Graphic::Graphic(int argc, char* argv[])
     : m_windowHandle(0)
@@ -21,9 +22,16 @@ Graphic::Graphic(int argc, char* argv[])
   }
   glutReshapeFunc(ResizeFunction);
   glutDisplayFunc(RenderFunction);
+  fprintf( stdout, "INFO: OpenGL Version: %s\n", glGetString(GL_VERSION));
 
-  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+  glClearColor(1.0f, 0.0f, 1.0f, 0.0f);
+
   glutMainLoop();
   exit(EXIT_SUCCESS);
+}
+
+void Graphic::doSomething()
+{
+
 }
 
