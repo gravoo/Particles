@@ -4,7 +4,6 @@
 #include <iostream>
 
 Graphic::Graphic(int argc, char* argv[])
-    : m_windowHandle(0)
 {
   glutInit(&argc, argv);
   glutInitContextVersion(4, 0);
@@ -14,7 +13,7 @@ Graphic::Graphic(int argc, char* argv[])
   glutSetOption( GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
   glutInitWindowSize(CurrentWidth, CurrentHeight);
   glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-  m_windowHandle = glutCreateWindow(WINDOW_TITLE_PREFIX);
+  m_windowHandle = glutCreateWindow(WINDOW_TITLE_PREFIX.c_str());
 
   if( m_windowHandle < 1) {
       fprintf( stderr, "ERROR: Could not create a new rendering window.\n" );
@@ -31,6 +30,11 @@ Graphic::Graphic(int argc, char* argv[])
 }
 
 void Graphic::doSomething()
+{
+
+}
+
+void Graphic::doSomethingElse()
 {
 
 }

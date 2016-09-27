@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include <GL/freeglut.h>
+#include <string>
 
 class Graphic
 {
@@ -20,11 +21,12 @@ public:
           glutPostRedisplay();
     }
     void doSomething();
+    void doSomethingElse();
 
 private:
-        int m_windowHandle;
-        int CurrentWidth = 800, CurrentHeight = 600, WindowHandle = 0;
-        const char* WINDOW_TITLE_PREFIX = "Particles";
+        int m_windowHandle { 0 };
+        int CurrentWidth { 800 }, CurrentHeight { 600 }, WindowHandle { 0 };
+        const std::string WINDOW_TITLE_PREFIX{"Particles"};
 };
 
 
