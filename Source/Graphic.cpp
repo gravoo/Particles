@@ -39,3 +39,12 @@ void Graphic::doSomethingElse()
 
 }
 
+void Graphic::ctagsNextTest()
+{
+
+}
+void Graphic::lastCtagsTest()
+{
+
+}
+

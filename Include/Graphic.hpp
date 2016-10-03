@@ -22,6 +22,9 @@ public:
     }
     void doSomething();
     void doSomethingElse();
+    void ctagTest();
+    void ctagsNextTest();
+    void lastCtagsTest();
 
 private:
         int m_windowHandle { 0 };
