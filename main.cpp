@@ -5,9 +5,5 @@
 
 int main(int argc, char* argv[])
 {
-    Graphic graphicComponent(argc, argv);
-    graphicComponent.doSomething();
-    graphicComponent.doSomethingElse();
+    Graphic graphicComponent(argc, argv); 
 }
-
-
