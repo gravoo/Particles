@@ -26,7 +26,21 @@ if(NOT GLUT_FOUND)
         message(ERROR " GLUT not found!")
 endif(NOT GLUT_FOUND)
 
+##FIND GLEW##
+find_package(GLEW REQUIRED)
+include_directories(${GLEW_INCLUDE_DIRS})
+link_directories(${GLEW_LIBRARY_DIRS})
+add_definitions(${GLEW_DEFINITIONS})
+if(NOT GLEW_FOUND)
+    message(ERROR " GLEW not found!")
+endif(NOT GLEW_FOUND)
+
+##FIND GLFW##
+find_package(PkgConfig REQUIRED)
+pkg_search_module(GLFW REQUIRED glfw3)
+include_directories(${GLFW_INCLUDE_DIRS})
+
 file(GLOB SOURCES "Source/*.cpp")
 add_executable(Particles main.cpp ${SOURCES})
 
-target_link_libraries(Particles ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
+target_link_libraries(Particles ${OPENGL_LIBRARIES} ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} ${GLUT_LIBRARY} ${GLEW_STATIC_LIBRARIES})

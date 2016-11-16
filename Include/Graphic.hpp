@@ -16,9 +16,21 @@ public:
         glutSwapBuffers();
         glutPostRedisplay();
     }
+    static void timerFunction(int time)
+    {
+        if (time != 0)
+        {
+            char *tmpString = (char *)malloc(512 + 10);
+            sprintf(tmpString, "%s : %d Frames Per Second @ %d x %d", "dupa", m_frameCount * 4, 800, 600);
+        }
+    };
 
 private:
+    int initWindowHandle(int argc, char *argv[]);
+    GLenum initGlew();
     int m_windowHandle{0};
     int CurrentWidth{800}, CurrentHeight{600}, WindowHandle{0};
+    static unsigned m_frameCount;
     const std::string WINDOW_TITLE_PREFIX{"Particles"};
+    GLenum m_glewInitResult;
 };
