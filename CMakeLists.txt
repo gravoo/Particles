@@ -18,13 +18,13 @@ if(NOT OPENGL_FOUND)
 endif(NOT OPENGL_FOUND)
 
 ##FIND GLUT##
-find_package(GLUT REQUIRED)
-include_directories(${GLUT_INCLUDE_DIRS})
-link_directories(${GLUT_LIBRARY_DIRS})
-add_definitions(${GLUT_DEFINITIONS})
-if(NOT GLUT_FOUND)
-        message(ERROR " GLUT not found!")
-endif(NOT GLUT_FOUND)
+#find_package(GLUT REQUIRED)
+#include_directories(${GLUT_INCLUDE_DIRS})
+#link_directories(${GLUT_LIBRARY_DIRS})
+#add_definitions(${GLUT_DEFINITIONS})
+#if(NOT GLUT_FOUND)
+ #       message(ERROR " GLUT not found!")
+#endif(NOT GLUT_FOUND) do target link libraries ${GLUT_LIBRARY}
 
 ##FIND GLEW##
 find_package(GLEW REQUIRED)
@@ -43,4 +43,4 @@ include_directories(${GLFW_INCLUDE_DIRS})
 file(GLOB SOURCES "Source/*.cpp")
 add_executable(Particles main.cpp ${SOURCES})
 
-target_link_libraries(Particles ${OPENGL_LIBRARIES} ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} ${GLUT_LIBRARY} ${GLEW_STATIC_LIBRARIES})
+target_link_libraries(Particles ${OPENGL_LIBRARIES} ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} ${GLEW_STATIC_LIBRARIES})
