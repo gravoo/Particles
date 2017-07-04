@@ -9,6 +9,7 @@
 #include <cmath>
 #include <Shader.hpp>
 
+#include <stb_image.h>
 // Function prototypes
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
@@ -58,7 +59,7 @@ int main()
 
     // Define the viewport dimensions
     int width, height;
-    glfwGetFramebufferSize(window, &width, &height);  
+    glfwGetFramebufferSize(window, &width, &height);
     glViewport(0, 0, width, height);
 
     // Set up vertex data (and buffer(s)) and attribute pointers
