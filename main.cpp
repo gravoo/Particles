@@ -84,8 +84,8 @@ int main()
 
     // load and create a texture
     // -------------------------
-    auto texture1 = load_texture("../Textures/face.png");
-    auto texture2 = load_texture("../Textures/face.png");
+    auto texture1 = load_texture("../Textures/wall.jpg");
+    auto texture2 = load_texture("../Textures/face.jpg");
     ourShader.Use();
     ourShader.set_int("texture1", 0);
     ourShader.set_int("texture2", 1);
