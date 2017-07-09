@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <glad/glad.h>
+#include <GL/glew.h> // Include glew to get all the required OpenGL headers
 
 class Shader
 {

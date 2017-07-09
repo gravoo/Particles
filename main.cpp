@@ -1,8 +1,15 @@
-#include <glad/glad.h>
+#include <iostream>
+
+// GLEW
+#define GLEW_STATIC
+#include <GL/glew.h>
+
+// GLFW
 #include <GLFW/glfw3.h>
-#include <stb_image.h>
+#include <cmath>
 #include <Shader.hpp>
 
+#include <stb_image.h>
 // Function prototypes
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 unsigned int load_texture(const std::string &texture_location);
@@ -27,6 +34,11 @@ int main()
 
     // Set the required callback functions
     glfwSetKeyCallback(window, key_callback);
+
+    // Set this to true so GLEW knows to use a modern approach to retrieving function pointers and extensions
+    glewExperimental = GL_TRUE;
+    // Initialize GLEW to setup the OpenGL Function pointers
+    glewInit();
 
     // Define the viewport dimensions
     int width, height;
