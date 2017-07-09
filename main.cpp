@@ -10,6 +10,7 @@
 #include <Shader.hpp>
 
 #include <stb_image.h>
+
 // Function prototypes
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 unsigned int load_texture(const std::string &texture_location);

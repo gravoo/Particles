@@ -7,7 +7,7 @@ set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 #Include files for project
-include_directories(${PROJECT_SOURCE_DIR} Include)
+include_directories(${PROJECT_SOURCE_DIR} Include glad/include)
 
 ##FIND OPENGL##
 find_package(OpenGL REQUIRED)
@@ -35,7 +35,7 @@ include_directories(${GLFW_INCLUDE_DIRS})
 include_directories(${CMAKE_DL_LIBS})
 include_directories(${OPENDCP_LIB})
 
-file(GLOB SOURCES "Source/*.cpp" "Source/*.c")
-add_executable(Particles main.cpp ${SOURCES})
+file(GLOB SOURCES "Source/*.cpp")
+add_executable(Particles main.cpp ${SOURCES} glad/src/glad.c)
 
 target_link_libraries(Particles ${OPENGL_LIBRARIES} ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} ${GLEW_STATIC_LIBRARIES} ${CMAKE_DL_LIBS} ${CMAKE_DL_LIBS})
