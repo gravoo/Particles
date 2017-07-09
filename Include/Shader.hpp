@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <GL/glew.h> // Include glew to get all the required OpenGL headers
+#include <glad/glad.h>
 
 class Shader
 {
@@ -14,4 +14,5 @@ public:
     Shader(const GLchar* vertexPath, const GLchar* fragmentPath);
     // Use the program
     void Use();
+    void set_int(const std::string &name, int value) const;
 };

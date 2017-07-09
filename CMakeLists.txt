@@ -17,15 +17,6 @@ if(NOT OPENGL_FOUND)
         message(ERROR " OPENGL not found!")
 endif(NOT OPENGL_FOUND)
 
-##FIND GLUT##
-#find_package(GLUT REQUIRED)
-#include_directories(${GLUT_INCLUDE_DIRS})
-#link_directories(${GLUT_LIBRARY_DIRS})
-#add_definitions(${GLUT_DEFINITIONS})
-#if(NOT GLUT_FOUND)
- #       message(ERROR " GLUT not found!")
-#endif(NOT GLUT_FOUND) do target link libraries ${GLUT_LIBRARY}
-
 ##FIND GLEW##
 find_package(GLEW REQUIRED)
 include_directories(${GLEW_INCLUDE_DIRS})
@@ -40,7 +31,10 @@ find_package(PkgConfig REQUIRED)
 pkg_search_module(GLFW REQUIRED glfw3)
 include_directories(${GLFW_INCLUDE_DIRS})
 
-file(GLOB SOURCES "Source/*.cpp")
+include_directories(${CMAKE_DL_LIBS})
+include_directories(${OPENDCP_LIB})
+
+file(GLOB SOURCES "Source/*.cpp" "Source/*.c")
 add_executable(Particles main.cpp ${SOURCES})
 
-target_link_libraries(Particles ${OPENGL_LIBRARIES} ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} ${GLEW_STATIC_LIBRARIES})
+target_link_libraries(Particles ${OPENGL_LIBRARIES} ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} ${GLEW_STATIC_LIBRARIES} ${CMAKE_DL_LIBS} ${CMAKE_DL_LIBS})
