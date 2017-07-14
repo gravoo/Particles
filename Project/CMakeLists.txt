@@ -9,7 +9,7 @@ include_directories(${PROJECT_SOURCE_DIR} glad/include)
 include_directories(${PROJECT_SOURCE_DIR} Utils/Include)
 
 #For the shared own library:
-set(PROJECT_LINK_LIBS libUtils.so)
+set(PROJECT_LINK_LIBS libUtils.a)
 link_directories(${PROJECT_SOURCE_DIR}/Utils/build)
 
 ##FIND OPENGL##

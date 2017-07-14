@@ -18,7 +18,7 @@ include_directories(${GLFW_INCLUDE_DIRS})
 file(GLOB SOURCES "Source/*.cpp")
 
 #Generate the shared library from the sources
-add_library(Utils SHARED ${SOURCES})
+add_library(Utils STATIC ${SOURCES})
 
 #Set the location for library installation -- i.e., /usr/lib in this case
 # not really necessary in this example. Use "sudo make install" to apply
