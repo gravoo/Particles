@@ -1,11 +1,8 @@
 cmake_minimum_required (VERSION 2.8)
 ##Project name
 project (Particles)
-set(CMAKE_CXX_FLAGS "-std=c++14 -g -Wall")
-# Set the output folder where your program will be created
-set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
-set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
+set(CMAKE_CXX_FLAGS "-std=c++17 -g -Wall")
+
 #Include files for project
 include_directories(${PROJECT_SOURCE_DIR} Include)
 include_directories(${PROJECT_SOURCE_DIR} glad/include)
