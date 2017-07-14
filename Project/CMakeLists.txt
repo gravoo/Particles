@@ -6,6 +6,11 @@ set(CMAKE_CXX_FLAGS "-std=c++17 -g -Wall")
 #Include files for project
 include_directories(${PROJECT_SOURCE_DIR} Include)
 include_directories(${PROJECT_SOURCE_DIR} glad/include)
+include_directories(${PROJECT_SOURCE_DIR} Utils/Include)
+
+#For the shared own library:
+set(PROJECT_LINK_LIBS libUtils.so)
+link_directories(${PROJECT_SOURCE_DIR}/Utils/build)
 
 ##FIND OPENGL##
 find_package(OpenGL REQUIRED)
@@ -36,4 +41,4 @@ include_directories(${OPENDCP_LIB})
 file(GLOB SOURCES "Source/*.cpp")
 add_executable(Particles ${SOURCES} glad/src/glad.c)
 
-target_link_libraries(Particles ${OPENGL_LIBRARIES} ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} ${GLEW_STATIC_LIBRARIES} ${CMAKE_DL_LIBS} ${CMAKE_DL_LIBS})
+target_link_libraries(Particles ${PROJECT_LINK_LIBS} ${OPENGL_LIBRARIES} ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} ${GLEW_STATIC_LIBRARIES} ${CMAKE_DL_LIBS} ${CMAKE_DL_LIBS})
