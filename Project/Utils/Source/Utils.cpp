@@ -1,5 +1,5 @@
-#include "Utils.hpp"
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+#include <Utils.hpp>
+void framebuffer_size_callback(GLFWwindow*, int width, int height)
 {
     glViewport(0, 0, width, height);
 }
