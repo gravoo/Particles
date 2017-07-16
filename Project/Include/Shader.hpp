@@ -3,16 +3,15 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <GL/glew.h> // Include glew to get all the required OpenGL headers
+// GLFW
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 class Shader
 {
 public:
-    // The program ID
     GLuint Program;
-    // Constructor reads and builds the shader
-    Shader(const GLchar* vertexPath, const GLchar* fragmentPath);
-    // Use the program
+    Shader();
     void Use();
     void set_int(const std::string &name, int value) const;
 };

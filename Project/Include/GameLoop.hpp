@@ -3,6 +3,7 @@
 // GLFW
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <Shader.hpp>
 
 class GameLoop
 {
@@ -16,5 +17,6 @@ private:
     int width{800};
     int height{600};
     std::string window_name{"Particles"};
+    Shader shader;
 };
 
