@@ -4,7 +4,7 @@
 
 Shader::Shader()
 {
-    std::cout<<"DUPA";
+    std::cout<<"DUPA"<<std::endl;
     std::string vertex_shader = read_file("../Shaders/SimpleShader.vertex1.glsl");
     std::cout<<vertex_shader;
 }
