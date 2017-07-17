@@ -14,39 +14,34 @@ void Shader::set_int(const std::string &name, int value) const
 {
     glUniform1i(glGetUniformLocation(Program, name.c_str()), value);
 }
-void Shader::compile_vertex_shader()
+unsigned int Shader::compile_vertex_shader()
 {
-    vertex_sader_id = glCreateShader(GL_VERTEX_SHADER);
+    unsigned int vertex_sader_id = glCreateShader(GL_VERTEX_SHADER);
     const char* vShaderCode = vertex_shader.c_str();
     glShaderSource(vertex_sader_id, 1, &vShaderCode, nullptr);
-    glCompileShader(vertex_sader_id);
-    int  success;
-    char infoLog[512];
-    glGetShaderiv(vertex_sader_id, GL_COMPILE_STATUS, &success);
-    if(!success)
+    if(!compiled_succesed(vertex_sader_id))
     {
-        glGetShaderInfoLog(vertex_sader_id, 512, nullptr, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+        return 0;
     }
+    return vertex_sader_id;
 }
-void Shader::compile_fragment_shader()
+
+unsigned int Shader::compile_fragment_shader()
 {
-    fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER);
+    unsigned int fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER);
     const char * fShaderCode = fragment_shader.c_str();
     glShaderSource(fragment_shader_id, 1, &fShaderCode, nullptr);
-    glCompileShader(fragment_shader_id);
-    int  success;
-    char infoLog[512];
-    glGetShaderiv(fragment_shader_id, GL_COMPILE_STATUS, &success);
-    if(!success)
+    if(!compiled_succesed(fragment_shader_id))
     {
-        glGetShaderInfoLog(fragment_shader_id, 512, nullptr, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+        return 0;
     }
+    return fragment_shader_id;
 }
 
 void Shader::compile_shaders()
 {
+    unsigned int vertex_sader_id = compile_vertex_shader();
+    unsigned int fragment_shader_id = compile_fragment_shader();
     shader_program = glCreateProgram();
     glAttachShader(shader_program, vertex_sader_id);
     glAttachShader(shader_program, fragment_shader_id);
@@ -60,6 +55,21 @@ void Shader::compile_shaders()
     }
     glDeleteShader(vertex_sader_id);
     glDeleteShader(fragment_shader_id);
+}
+
+bool Shader::compiled_succesed(unsigned int shader_id)
+{
+    glCompileShader(shader_id);
+    int  success;
+    char infoLog[512];
+    glGetShaderiv(shader_id, GL_COMPILE_STATUS, &success);
+    if(!success)
+    {
+        glGetShaderInfoLog(shader_id, 512, nullptr, infoLog);
+        std::cout << "ERROR::SHADER::FRAGMENT::OR::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+        return false;
+    }
+    return true;
 }
 
 
