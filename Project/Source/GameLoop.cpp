@@ -1,4 +1,4 @@
-#include "GameLoop.hpp"
+#include <GameLoop.hpp>
 #include "Utils.hpp"
 
 GameLoop::GameLoop()

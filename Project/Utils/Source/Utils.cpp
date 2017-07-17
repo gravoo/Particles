@@ -11,3 +11,19 @@ void processInput(GLFWwindow *window)
         glfwSetWindowShouldClose(window, true);
     }
 }
+
+std::string read_file(std::string path)
+{
+    std::string line;
+    std::string file;
+    std::ifstream myfile(path);
+    if (myfile.is_open())
+    {
+        while ( getline (myfile,line) )
+        {
+            file.append(line);
+        }
+        myfile.close();
+    }
+    return file;
+}
