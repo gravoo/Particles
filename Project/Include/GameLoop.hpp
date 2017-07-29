@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <Shader.hpp>
+#include <Geometry.hpp>
 
 class GameLoop
 {
@@ -18,5 +19,6 @@ private:
     int height{600};
     std::string window_name{"Particles"};
     Shader shader;
+    Geometry geometry;
 };
 

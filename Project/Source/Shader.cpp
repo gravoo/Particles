@@ -1,6 +1,6 @@
 #include <Shader.hpp>
 #include <Utils.hpp>
-
+#include <cassert>
 Shader::Shader()
 {
     vertex_shader = read_file("../Shaders/SimpleShader.vertex1.glsl");
@@ -8,11 +8,11 @@ Shader::Shader()
 }
 void Shader::Use()
 {
-    glUseProgram(this->Program);
+    glUseProgram(shader_program);
 }
 void Shader::set_int(const std::string &name, int value) const
 {
-    glUniform1i(glGetUniformLocation(Program, name.c_str()), value);
+    glUniform1i(glGetUniformLocation(shader_program, name.c_str()), value);
 }
 unsigned int Shader::compile_vertex_shader()
 {

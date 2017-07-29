@@ -7,7 +7,6 @@
 class Shader
 {
 public:
-    GLuint Program;
     Shader();
     void compile_shaders();
     void Use();

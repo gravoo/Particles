@@ -21,7 +21,7 @@ std::string read_file(std::string path)
     {
         while ( getline (myfile,line) )
         {
-            file.append(line);
+            file.append(line+"\n");
         }
         myfile.close();
     }
