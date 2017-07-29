@@ -3,6 +3,7 @@
 #include <cassert>
 
 GameLoop::GameLoop()
+        : shader("../Shaders/SimpleShader.fragment.glsl"), shaderA("../Shaders/SimpleShader.fragment1.glsl")
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -21,6 +22,7 @@ GameLoop::GameLoop()
         assert(false);
     }
     shader.compile_shaders();
+    shaderA.compile_shaders();
     geometry.generate_and_bind_buffered_objects();
 }
 
@@ -35,7 +37,10 @@ void GameLoop::run_game()
         glClear(GL_COLOR_BUFFER_BIT);
         //draw triangle
         shader.Use();
-        glBindVertexArray(geometry.get_Vertex_Array_Object());
+        glBindVertexArray(geometry.get_Vertex_Array_Object(0));
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        shaderA.Use();
+        glBindVertexArray(geometry.get_Vertex_Array_Object(1));
         glDrawArrays(GL_TRIANGLES, 0, 3);
         //check and call events, swap the buffers
         glfwSwapBuffers(window);

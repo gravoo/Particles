@@ -19,6 +19,7 @@ private:
     int height{600};
     std::string window_name{"Particles"};
     Shader shader;
+    Shader shaderA;
     Geometry geometry;
 };
 

@@ -8,6 +8,7 @@ class Shader
 {
 public:
     Shader();
+    Shader(std::string path_to_fragment_shader);
     void compile_shaders();
     void Use();
     void set_int(const std::string &name, int value) const;
