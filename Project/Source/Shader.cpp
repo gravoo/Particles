@@ -1,6 +1,8 @@
 #include <Shader.hpp>
 #include <Utils.hpp>
 #include <cassert>
+#include <cmath>
+
 Shader::Shader()
 {
     vertex_shader = read_file("../Shaders/SimpleShader.vertex1.glsl");
@@ -76,6 +78,14 @@ bool Shader::compiled_succesed(unsigned int shader_id)
         return false;
     }
     return true;
+}
+void Shader::change_color_with_uniform() const
+{
+    float timeValue = glfwGetTime();
+    float greenValue = (std::sin(timeValue) / 2.0f) + 0.5f;
+    int vertexColorLocation = glGetUniformLocation(shader_program, "ourColor");
+    glUseProgram(shader_program);
+    glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 }
 
 

@@ -72,4 +72,5 @@ Geometry::~Geometry()
 {
     glDeleteVertexArrays(2, VAO);
     glDeleteBuffers(2, VBO);
+    glDeleteBuffers(1, &EBO);
 }

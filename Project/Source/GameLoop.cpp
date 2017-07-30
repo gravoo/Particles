@@ -3,7 +3,7 @@
 #include <cassert>
 
 GameLoop::GameLoop()
-        : shader("../Shaders/SimpleShader.fragment.glsl"), shaderA("../Shaders/SimpleShader.fragment1.glsl")
+        : shader("../Shaders/SimpleShader.fragment.glsl"), shaderA("../Shaders/SimpleShader.fragmentA.glsl")
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -40,6 +40,7 @@ void GameLoop::run_game()
         glBindVertexArray(geometry.get_Vertex_Array_Object(0));
         glDrawArrays(GL_TRIANGLES, 0, 3);
         shaderA.Use();
+        shaderA.change_color_with_uniform();
         glBindVertexArray(geometry.get_Vertex_Array_Object(1));
         glDrawArrays(GL_TRIANGLES, 0, 3);
         //check and call events, swap the buffers

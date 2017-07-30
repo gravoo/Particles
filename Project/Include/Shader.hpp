@@ -12,6 +12,7 @@ public:
     void compile_shaders();
     void Use();
     void set_int(const std::string &name, int value) const;
+    void change_color_with_uniform() const;
 private:
     unsigned int compile_vertex_shader();
     unsigned int compile_fragment_shader();
