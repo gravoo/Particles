@@ -3,15 +3,9 @@
 #include <cassert>
 #include <cmath>
 
-Shader::Shader()
+Shader::Shader(std::string path_to_vertex_shader, std::string path_to_fragment_shader)
 {
-    vertex_shader = read_file("../Shaders/SimpleShader.vertex1.glsl");
-    fragment_shader = read_file("../Shaders/SimpleShader.fragment1.glsl");
-}
-
-Shader::Shader(std::string path_to_fragment_shader)
-{
-    vertex_shader = read_file("../Shaders/SimpleShader.vertex1.glsl");
+    vertex_shader = read_file(path_to_vertex_shader);
     fragment_shader = read_file(path_to_fragment_shader);
 }
 void Shader::Use()

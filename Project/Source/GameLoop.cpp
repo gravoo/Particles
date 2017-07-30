@@ -2,8 +2,9 @@
 #include "Utils.hpp"
 #include <cassert>
 
-GameLoop::GameLoop()
-        : shader("../Shaders/SimpleShader.fragment.glsl"), shaderA("../Shaders/SimpleShader.fragmentA.glsl")
+GameLoop::GameLoop() :
+        shader("../Shaders/SimpleShader.vertex.glsl", "../Shaders/SimpleShader.fragment.glsl"),
+        shaderA("../Shaders/SimpleShader.vertexA.glsl", "../Shaders/SimpleShader.fragmentA.glsl")
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -35,13 +36,15 @@ void GameLoop::run_game()
         //render commands
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        //draw triangle
-        shader.Use();
-        glBindVertexArray(geometry.get_Vertex_Array_Object(0));
-        glDrawArrays(GL_TRIANGLES, 0, 3);
         shaderA.Use();
         shaderA.change_color_with_uniform();
         glBindVertexArray(geometry.get_Vertex_Array_Object(1));
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glBindVertexArray(geometry.get_Vertex_Array_Object(2));
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        //draw triangle
+        shader.Use();
+        glBindVertexArray(geometry.get_Vertex_Array_Object(0));
         glDrawArrays(GL_TRIANGLES, 0, 3);
         //check and call events, swap the buffers
         glfwSwapBuffers(window);
