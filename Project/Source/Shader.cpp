@@ -68,11 +68,12 @@ bool Shader::compiled_succesed(unsigned int shader_id)
     if(!success)
     {
         glGetShaderInfoLog(shader_id, 512, nullptr, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::OR::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+        std::cout << "ERROR::PROGRAM_LINKING_ERROR\n" << infoLog << std::endl;
         return false;
     }
     return true;
 }
+
 void Shader::change_color_with_uniform() const
 {
     float timeValue = glfwGetTime();
@@ -80,6 +81,16 @@ void Shader::change_color_with_uniform() const
     int vertexColorLocation = glGetUniformLocation(shader_program, "ourColor");
     glUseProgram(shader_program);
     glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+}
+
+void Shader::move_shape_with_uniform() const
+{
+    float timeValue = glfwGetTime();
+    float x_coordin = (std::sin(timeValue) / 2.0f);
+    float y_coordin = (std::cos(timeValue) / 2.0f);
+    int vertexLocation = glGetUniformLocation(shader_program, "offsetValue");
+    glUseProgram(shader_program);
+    glUniform3f(vertexLocation, x_coordin, y_coordin, x_coordin + y_coordin);
 }
 
 

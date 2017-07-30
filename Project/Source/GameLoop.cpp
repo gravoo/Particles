@@ -44,6 +44,7 @@ void GameLoop::run_game()
         glDrawArrays(GL_TRIANGLES, 0, 3);
         //draw triangle
         shader.Use();
+        shader.move_shape_with_uniform();
         glBindVertexArray(geometry.get_Vertex_Array_Object(0));
         glDrawArrays(GL_TRIANGLES, 0, 3);
         //check and call events, swap the buffers
