@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <Shader.hpp>
 #include <Geometry.hpp>
+#include <Textures.hpp>
 
 class GameLoop
 {
@@ -20,6 +21,8 @@ private:
     std::string window_name{"Particles"};
     Shader shader;
     Shader shaderA;
+    Shader woddenWallShader;
     Geometry geometry;
+    Textures texture;
 };
 
