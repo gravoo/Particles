@@ -11,6 +11,7 @@ public:
     void compile_shaders();
     void Use();
     void set_int(const std::string &name, int value) const;
+    void set_float(const std::string &name, float value) const;
     void change_color_with_uniform() const;
     void move_shape_with_uniform() const;
 private:

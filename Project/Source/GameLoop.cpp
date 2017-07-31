@@ -27,12 +27,17 @@ GameLoop::GameLoop() :
     shaderA.compile_shaders();
     woddenWallShader.compile_shaders();
     geometry.generate_and_bind_buffered_objects();
-//     geometry.generate_and_bind_buffered_and_element_objects();
-    texture.load_texture();
+    texture.load_texture("../Textures/container.jpg", "../Textures/face.jpg");
 }
 
 void GameLoop::run_game()
 {
+    woddenWallShader.Use();
+    woddenWallShader.set_int("texture1", 0);
+    woddenWallShader.set_int("texture2", 1);
+    float mixValue{0.8f};
+//     woddenWallShader.set_float("mixValue", mixValue);
+
     while(!glfwWindowShouldClose(window))
     {
         //input
@@ -45,17 +50,19 @@ void GameLoop::run_game()
         shader.move_shape_with_uniform();
         glBindVertexArray(geometry.get_Vertex_Array_Object(0));
         glDrawArrays(GL_TRIANGLES, 0, 3);
+
         //draw object with texture
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture.get_texture_id());
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, texture.get_texture_id2());
+        mixValue = changedMixedValue(window, mixValue);
         woddenWallShader.Use();
+        woddenWallShader.set_float("mixValue", mixValue);
         glBindVertexArray(geometry.get_Vertex_Array_Object(3));
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         //check and call events, swap the buffers
         //draw blinking triangle
-        shaderA.Use();
-        shaderA.change_color_with_uniform();
-        glBindVertexArray(geometry.get_Vertex_Array_Object(1));
-        glDrawArrays(GL_TRIANGLES, 0, 3);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

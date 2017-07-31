@@ -16,6 +16,12 @@ void Shader::set_int(const std::string &name, int value) const
 {
     glUniform1i(glGetUniformLocation(shader_program, name.c_str()), value);
 }
+
+void Shader::set_float(const std::string &name, float value) const
+{
+    glUniform1f(glGetUniformLocation(shader_program, name.c_str()), value);
+}
+
 unsigned int Shader::compile_vertex_shader()
 {
     unsigned int vertex_sader_id = glCreateShader(GL_VERTEX_SHADER);
@@ -92,6 +98,4 @@ void Shader::move_shape_with_uniform() const
     glUseProgram(shader_program);
     glUniform3f(vertexLocation, x_coordin, y_coordin, x_coordin + y_coordin);
 }
-
-
 
