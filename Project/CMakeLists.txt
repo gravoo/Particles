@@ -7,6 +7,7 @@ set(CMAKE_CXX_FLAGS "-std=c++17 -g -Wall")
 include_directories(${PROJECT_SOURCE_DIR} Include)
 include_directories(${PROJECT_SOURCE_DIR} glad/include)
 include_directories(${PROJECT_SOURCE_DIR} Utils/Include)
+include_directories(${PROJECT_SOURCE_DIR} glm)
 
 #For the shared own library:
 set(PROJECT_LINK_LIBS libUtils.a)

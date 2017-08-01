@@ -36,7 +36,6 @@ void GameLoop::run_game()
     woddenWallShader.set_int("texture1", 0);
     woddenWallShader.set_int("texture2", 1);
     float mixValue{0.8f};
-//     woddenWallShader.set_float("mixValue", mixValue);
 
     while(!glfwWindowShouldClose(window))
     {
@@ -47,7 +46,7 @@ void GameLoop::run_game()
         glClear(GL_COLOR_BUFFER_BIT);
         //draw flying triangle
         shader.Use();
-        shader.move_shape_with_uniform();
+        shader.move_shape_with_uniform("offsetValue");
         glBindVertexArray(geometry.get_Vertex_Array_Object(0));
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -59,6 +58,7 @@ void GameLoop::run_game()
         mixValue = changedMixedValue(window, mixValue);
         woddenWallShader.Use();
         woddenWallShader.set_float("mixValue", mixValue);
+        woddenWallShader.rotate_left("transform");
         glBindVertexArray(geometry.get_Vertex_Array_Object(3));
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         //check and call events, swap the buffers

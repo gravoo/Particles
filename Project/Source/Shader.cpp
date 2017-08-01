@@ -2,6 +2,9 @@
 #include <Utils.hpp>
 #include <cassert>
 #include <cmath>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 Shader::Shader(std::string path_to_vertex_shader, std::string path_to_fragment_shader)
 {
@@ -20,6 +23,13 @@ void Shader::set_int(const std::string &name, int value) const
 void Shader::set_float(const std::string &name, float value) const
 {
     glUniform1f(glGetUniformLocation(shader_program, name.c_str()), value);
+}
+void Shader::rotate_left(const std::string &name) const
+{
+    glm::mat4 trans;
+    trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+    trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+    glUniformMatrix4fv(glGetUniformLocation(shader_program, name.c_str()), 1, GL_FALSE, glm::value_ptr(trans));
 }
 
 unsigned int Shader::compile_vertex_shader()
@@ -89,13 +99,13 @@ void Shader::change_color_with_uniform() const
     glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 }
 
-void Shader::move_shape_with_uniform() const
+void Shader::move_shape_with_uniform(const std::string &name) const
 {
     float timeValue = glfwGetTime();
-    float x_coordin = (std::sin(timeValue) / 2.0f);
-    float y_coordin = (std::cos(timeValue) / 2.0f);
-    int vertexLocation = glGetUniformLocation(shader_program, "offsetValue");
-    glUseProgram(shader_program);
-    glUniform3f(vertexLocation, x_coordin, y_coordin, x_coordin + y_coordin);
+    float x_coordin = (std::sin(timeValue));
+    glm::mat4 trans;
+    trans = glm::scale(trans, glm::vec3(x_coordin, x_coordin, x_coordin));
+    trans = glm::translate(trans, glm::vec3(-0.5f, 0.5f, 0.0f));
+    glUniformMatrix4fv(glGetUniformLocation(shader_program, name.c_str()), 1, GL_FALSE, glm::value_ptr(trans));
 }
 

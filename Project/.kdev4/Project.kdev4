@@ -25,6 +25,7 @@ Name=Clang
 [CustomDefinesAndIncludes][ProjectPath0][Includes]
 1=/home/gravoo/Projects/Particles/Project/Include/
 2=/home/gravoo/Projects/Particles/Project/glad/include/
+3=/home/gravoo/Projects/Particles/Project/glm/
 
 [Filters]
 size=33
