@@ -34,6 +34,7 @@ GameLoop::GameLoop() :
 
 void GameLoop::run_game()
 {
+    glEnable(GL_DEPTH_TEST);
     woddenWallShader.Use();
     woddenWallShader.set_int("texture1", 0);
     woddenWallShader.set_int("texture2", 1);
@@ -48,7 +49,8 @@ void GameLoop::run_game()
         processInput(window);
         //render commands
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         //draw flying triangle
         shader.Use();
         shader.move_shape_with_uniform("offsetValue");
@@ -61,10 +63,13 @@ void GameLoop::run_game()
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture.get_texture_id2());
         cubeShader.Use();
-        cubeShader.rotate_cube();
-        cubeShader.set_float("mixValue", mixValue);
         glBindVertexArray(geometry.get_Vertex_Array_Object(4));
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        for(int i{0}; i<10; i++)
+        {
+            cubeShader.rotate_cube(i);
+            cubeShader.set_float("mixValue", mixValue);
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
 
         //draw object with texture
         glActiveTexture(GL_TEXTURE0);
@@ -78,7 +83,6 @@ void GameLoop::run_game()
         woddenWallShader.generate_perspective();
         glBindVertexArray(geometry.get_Vertex_Array_Object(3));
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
 
         //check and call events, swap the buffers
         //draw blinking triangle
