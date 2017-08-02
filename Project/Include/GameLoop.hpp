@@ -22,6 +22,7 @@ private:
     Shader shader;
     Shader shaderA;
     Shader woddenWallShader;
+    Shader cubeShader;
     Geometry geometry;
     Textures texture;
 };

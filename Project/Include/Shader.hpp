@@ -15,6 +15,8 @@ public:
     void change_color_with_uniform() const;
     void move_shape_with_uniform(const std::string &name) const;
     void rotate_left(const std::string &name) const;
+    void generate_perspective() const;
+    void rotate_cube() const;
 private:
     unsigned int compile_vertex_shader();
     unsigned int compile_fragment_shader();

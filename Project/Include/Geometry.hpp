@@ -17,6 +17,7 @@ private:
     std::vector<float> verticesA;
     std::vector<float> verticesB;
     std::vector<float> woodenWall;
+    std::vector<float> cube;
     std::vector<unsigned int> indices;
 };
 
