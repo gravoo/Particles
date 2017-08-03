@@ -2,8 +2,7 @@
 #include <Utils.hpp>
 #include <cassert>
 #include <cmath>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+
 
 Shader::Shader(std::string path_to_vertex_shader, std::string path_to_fragment_shader)
 {
@@ -108,7 +107,7 @@ void Shader::move_shape_with_uniform(const std::string &name) const
     glUniformMatrix4fv(glGetUniformLocation(shader_program, name.c_str()), 1, GL_FALSE, glm::value_ptr(trans));
 }
 
-void Shader::generate_perspective(const unsigned int index) const
+void Shader::generate_perspective(const unsigned int index, glm::vec3 cameraPos, glm::vec3 cameraFront, glm::vec3 cameraUp) const
 {
         glm::vec3 cubePositions[] = {
         glm::vec3( 0.0f,  0.0f,  0.0f),
@@ -122,12 +121,7 @@ void Shader::generate_perspective(const unsigned int index) const
         glm::vec3( 1.5f,  0.2f, -1.5f),
         glm::vec3(-1.3f,  1.0f, -1.5f)
         };
-    float radius = 10.0f;
-    float camX = sin(glfwGetTime()) * radius;
-    float camZ = cos(glfwGetTime()) * radius;
-    float camY = cos(glfwGetTime()) * radius;
-    glm::mat4 view;
-    view = glm::lookAt(glm::vec3(camX, camY, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+    glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     glm::mat4 projection;
     glm::mat4 model;
     projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
@@ -141,18 +135,6 @@ void Shader::generate_perspective(const unsigned int index) const
 
 void Shader::rotate_cube(int i) const
 {
-    glm::vec3 cubePositions[] = {
-        glm::vec3( 0.0f,  0.0f,  0.0f),
-        glm::vec3( 2.0f,  5.0f, -15.0f),
-        glm::vec3(-1.5f, -2.2f, -2.5f),
-        glm::vec3(-3.8f, -2.0f, -12.3f),
-        glm::vec3( 2.4f, -0.4f, -3.5f),
-        glm::vec3(-1.7f,  3.0f, -7.5f),
-        glm::vec3( 1.3f, -2.0f, -2.5f),
-        glm::vec3( 1.5f,  2.0f, -2.5f),
-        glm::vec3( 1.5f,  0.2f, -1.5f),
-        glm::vec3(-1.3f,  1.0f, -1.5f)
-        };
     glm::mat4 model;
     float angle = 20.0f * i;
     model = glm::rotate(model, glm::radians(angle), glm::vec3(0.5f, -0.5f, 0.0f));

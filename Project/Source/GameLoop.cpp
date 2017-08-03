@@ -1,8 +1,7 @@
 #include <GameLoop.hpp>
 #include "Utils.hpp"
 #include <cassert>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+
 
 GameLoop::GameLoop() :
         shader("../Shaders/SimpleShader.vertex.glsl", "../Shaders/SimpleShader.fragment.glsl"),
@@ -40,13 +39,12 @@ void GameLoop::run_game()
     woddenWallShader.Use();
     woddenWallShader.set_int("texture1", 0);
     woddenWallShader.set_int("texture2", 1);
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
-    woddenWallShader.setMat4("projection", projection);
 
     while(!glfwWindowShouldClose(window))
     {
         //input
         processInput(window);
+        move_camera();
         //render commands
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -60,7 +58,7 @@ void GameLoop::run_game()
         glBindVertexArray(geometry.get_Vertex_Array_Object(0));
         for(int i{0};i<10;i++)
         {
-            woddenWallShader.generate_perspective(i);
+            woddenWallShader.generate_perspective(i, cameraPos, cameraFront, cameraUp);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
 
@@ -70,6 +68,27 @@ void GameLoop::run_game()
         glfwPollEvents();
     }
 }
+
+void GameLoop::move_camera()
+{
+    float currentFrame = glfwGetTime();
+    deltaTime = currentFrame - lastFrame;
+    lastFrame = currentFrame;
+    float cameraSpeed = 2.5f * deltaTime; // adjust accordingly
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        cameraPos += cameraSpeed * cameraFront;
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        cameraPos -= cameraSpeed * cameraFront;
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+        cameraPos += cameraUp * cameraSpeed;
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+        cameraPos -= cameraUp * cameraSpeed;
+}
+
 
 GameLoop::~GameLoop()
 {
