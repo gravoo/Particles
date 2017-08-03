@@ -42,7 +42,6 @@ void GameLoop::run_game()
     woddenWallShader.set_int("texture2", 1);
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
     woddenWallShader.setMat4("projection", projection);
-    float mixValue{0.8f};
 
     while(!glfwWindowShouldClose(window))
     {
@@ -57,12 +56,13 @@ void GameLoop::run_game()
         glBindTexture(GL_TEXTURE_2D, texture.get_texture_id());
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture.get_texture_id2());
-        mixValue = changedMixedValue(window, mixValue);
         woddenWallShader.Use();
-        woddenWallShader.set_float("mixValue", mixValue);
-        woddenWallShader.generate_perspective();
-        glBindVertexArray(geometry.get_Vertex_Array_Object(4));
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glBindVertexArray(geometry.get_Vertex_Array_Object(0));
+        for(int i{0};i<10;i++)
+        {
+            woddenWallShader.generate_perspective(i);
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
 
         //check and call events, swap the buffers
         //draw blinking triangle

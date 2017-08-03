@@ -7,7 +7,6 @@ public:
     Geometry();
     unsigned int get_Vertex_Array_Object(unsigned int index);
     void generate_and_bind_buffered_objects();
-    void generate_and_bind_buffered_and_element_objects();
     ~Geometry();
 private:
     std::vector<unsigned int> VAO;
