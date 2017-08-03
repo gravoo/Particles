@@ -1,6 +1,8 @@
 #include <GameLoop.hpp>
 #include "Utils.hpp"
 #include <cassert>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 GameLoop::GameLoop() :
         shader("../Shaders/SimpleShader.vertex.glsl", "../Shaders/SimpleShader.fragment.glsl"),
@@ -38,9 +40,8 @@ void GameLoop::run_game()
     woddenWallShader.Use();
     woddenWallShader.set_int("texture1", 0);
     woddenWallShader.set_int("texture2", 1);
-    cubeShader.Use();
-    cubeShader.set_int("texture1", 0);
-    cubeShader.set_int("texture2", 1);
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
+    woddenWallShader.setMat4("projection", projection);
     float mixValue{0.8f};
 
     while(!glfwWindowShouldClose(window))
@@ -51,26 +52,6 @@ void GameLoop::run_game()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        //draw flying triangle
-        shader.Use();
-        shader.move_shape_with_uniform("offsetValue");
-        shader.generate_perspective();
-        glBindVertexArray(geometry.get_Vertex_Array_Object(0));
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-        //draw cube
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture.get_texture_id());
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, texture.get_texture_id2());
-        cubeShader.Use();
-        glBindVertexArray(geometry.get_Vertex_Array_Object(4));
-        for(int i{0}; i<10; i++)
-        {
-            cubeShader.rotate_cube(i);
-            cubeShader.set_float("mixValue", mixValue);
-            glDrawArrays(GL_TRIANGLES, 0, 36);
-        }
-
         //draw object with texture
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture.get_texture_id());
@@ -79,10 +60,9 @@ void GameLoop::run_game()
         mixValue = changedMixedValue(window, mixValue);
         woddenWallShader.Use();
         woddenWallShader.set_float("mixValue", mixValue);
-        woddenWallShader.rotate_left("transform");
         woddenWallShader.generate_perspective();
-        glBindVertexArray(geometry.get_Vertex_Array_Object(3));
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(geometry.get_Vertex_Array_Object(4));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //check and call events, swap the buffers
         //draw blinking triangle
