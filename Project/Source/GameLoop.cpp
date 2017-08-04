@@ -58,7 +58,8 @@ GameLoop::GameLoop() :
         shader("../Shaders/SimpleShader.vertex.glsl", "../Shaders/SimpleShader.fragment.glsl"),
         shaderA("../Shaders/SimpleShader.vertexA.glsl", "../Shaders/SimpleShader.fragmentA.glsl"),
         woddenWallShader("../Shaders/VertexShader.WoodenWall.glsl", "../Shaders/FragmentShader.WoodenWall.glsl"),
-        cubeShader("../Shaders/VertexShader.Cube.glsl", "../Shaders/FragmentShader.WoodenWall.glsl")
+        cubeShader("../Shaders/VertexShader.Cube.glsl", "../Shaders/FragmentShader.WoodenWall.glsl"),
+        camera(glm::vec3(0.0f, 0.0f, 3.0f))
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -148,5 +149,3 @@ GameLoop::~GameLoop()
 {
     glfwTerminate();
 }
-
-
