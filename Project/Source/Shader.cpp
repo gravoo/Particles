@@ -107,7 +107,8 @@ void Shader::move_shape_with_uniform(const std::string &name) const
     glUniformMatrix4fv(glGetUniformLocation(shader_program, name.c_str()), 1, GL_FALSE, glm::value_ptr(trans));
 }
 
-void Shader::generate_perspective(const unsigned int index, glm::vec3 cameraPos, glm::vec3 cameraFront, glm::vec3 cameraUp) const
+void Shader::generate_perspective(const unsigned int index, glm::vec3 cameraPos, glm::vec3 cameraFront,
+                                  glm::vec3 cameraUp, float fov) const
 {
         glm::vec3 cubePositions[] = {
         glm::vec3( 0.0f,  0.0f,  0.0f),
@@ -124,7 +125,7 @@ void Shader::generate_perspective(const unsigned int index, glm::vec3 cameraPos,
     glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     glm::mat4 projection;
     glm::mat4 model;
-    projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 100.0f);
     float angle = 20.0f * index;
     model = glm::translate(model, cubePositions[index]);
     model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));

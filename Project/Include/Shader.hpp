@@ -17,7 +17,7 @@ public:
     void change_color_with_uniform() const;
     void move_shape_with_uniform(const std::string &name) const;
     void rotate_left(const std::string &name) const;
-    void generate_perspective(const unsigned int index, glm::vec3 cameraPos, glm::vec3 cameraFront, glm::vec3 cameraUp) const;
+    void generate_perspective(const unsigned int index, glm::vec3 cameraPos, glm::vec3 cameraFront, glm::vec3 cameraUp, float fov) const;
     void rotate_cube(int i) const;
     void setMat4(const std::string &name, const glm::mat4 &mat) const;
 private:
