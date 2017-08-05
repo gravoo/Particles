@@ -40,15 +40,13 @@ int main()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
 
+    game.Init();
     while(!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
-        //render commands
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        //check and call events, swap the buffers
-        //draw blinking triangle
+        game.Render();
         glfwSwapBuffers(window);
     }
     ResourceManager::Clear();

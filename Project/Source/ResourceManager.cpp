@@ -44,7 +44,7 @@ Shader ResourceManager::loadShaderFromFile(std::string vertex_shader_path, std::
     std::string vertex_shader_source_code = read_file(vertex_shader_path);
     std::string fragment_shader_source_code = read_file(fragment_shader_path);
     Shader shader;
-    shader.compile_shaders(vertex_shader_path, fragment_shader_path);
+    shader.compile_shaders(vertex_shader_source_code, fragment_shader_source_code);
     return shader;
 }
 
