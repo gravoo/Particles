@@ -4,81 +4,73 @@
 #include <cmath>
 
 
-Shader::Shader(std::string path_to_vertex_shader, std::string path_to_fragment_shader)
+Shader::Shader()
 {
-    vertex_shader = read_file(path_to_vertex_shader);
-    fragment_shader = read_file(path_to_fragment_shader);
 }
-void Shader::Use()
+Shader &Shader::Use()
 {
     glUseProgram(shader_program);
-}
-void Shader::set_int(const std::string &name, int value) const
-{
-    glUniform1i(glGetUniformLocation(shader_program, name.c_str()), value);
+    return *this;
 }
 
-void Shader::set_float(const std::string &name, float value) const
+GLuint Shader::get_shader_id()
 {
-    glUniform1f(glGetUniformLocation(shader_program, name.c_str()), value);
-}
-void Shader::rotate_left(const std::string &name) const
-{
-    glm::mat4 trans;
-    trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
-    trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-    glUniformMatrix4fv(glGetUniformLocation(shader_program, name.c_str()), 1, GL_FALSE, glm::value_ptr(trans));
+    return shader_program;
 }
 
-unsigned int Shader::compile_vertex_shader()
+unsigned int Shader::compile_vertex_shader(std::string vertex_shader_source_code)
 {
     unsigned int vertex_sader_id = glCreateShader(GL_VERTEX_SHADER);
-    const char* vShaderCode = vertex_shader.c_str();
+    const char* vShaderCode = vertex_shader_source_code.c_str();
     glShaderSource(vertex_sader_id, 1, &vShaderCode, nullptr);
-    if(!compiled_succesed(vertex_sader_id))
+    glCompileShader(vertex_sader_id);
+    int  success;
+    glGetShaderiv(vertex_sader_id, GL_COMPILE_STATUS, &success);
+    if(!compiled_succesed(vertex_sader_id, success))
     {
+        std::cout << "ERROR::VERTEX_SHADER\n";
         return 0;
     }
     return vertex_sader_id;
 }
 
-unsigned int Shader::compile_fragment_shader()
+unsigned int Shader::compile_fragment_shader(std::string fragment_shader_source_code)
 {
     unsigned int fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER);
-    const char * fShaderCode = fragment_shader.c_str();
+    const char * fShaderCode = fragment_shader_source_code.c_str();
     glShaderSource(fragment_shader_id, 1, &fShaderCode, nullptr);
-    if(!compiled_succesed(fragment_shader_id))
+    glCompileShader(fragment_shader_id);
+    int  success;
+    glGetShaderiv(fragment_shader_id, GL_COMPILE_STATUS, &success);
+    if(!compiled_succesed(fragment_shader_id, success))
     {
+        std::cout << "ERROR::FRAGMENT_SHADER\n";
         return 0;
     }
     return fragment_shader_id;
 }
 
-void Shader::compile_shaders()
+void Shader::compile_shaders(std::string vertex_shader_source_code, std::string fragment_shader_source_code)
 {
-    unsigned int vertex_sader_id = compile_vertex_shader();
-    unsigned int fragment_shader_id = compile_fragment_shader();
+    unsigned int vertex_sader_id = compile_vertex_shader(vertex_shader_source_code);
+    unsigned int fragment_shader_id = compile_fragment_shader(fragment_shader_source_code);
     shader_program = glCreateProgram();
     glAttachShader(shader_program, vertex_sader_id);
     glAttachShader(shader_program, fragment_shader_id);
     glLinkProgram(shader_program);
     int  success;
-    char infoLog[512];
     glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
-    if(!success) {
-        glGetProgramInfoLog(shader_program, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::COMPILATION_FAILED\n" << infoLog << std::endl;
+    if(!compiled_succesed(shader_program, success))
+    {
+        std::cout << "ERROR::SHADER::COMPILATION_FAILED\n";
     }
     glDeleteShader(vertex_sader_id);
     glDeleteShader(fragment_shader_id);
 }
 
-bool Shader::compiled_succesed(unsigned int shader_id)
+bool Shader::compiled_succesed(unsigned int shader_id, int success)
 {
-    glCompileShader(shader_id);
-    int  success;
     char infoLog[512];
-    glGetShaderiv(shader_id, GL_COMPILE_STATUS, &success);
     if(!success)
     {
         glGetShaderInfoLog(shader_id, 512, nullptr, infoLog);
@@ -88,65 +80,19 @@ bool Shader::compiled_succesed(unsigned int shader_id)
     return true;
 }
 
-void Shader::change_color_with_uniform() const
-{
-    float timeValue = glfwGetTime();
-    float greenValue = (std::sin(timeValue) / 2.0f) + 0.5f;
-    int vertexColorLocation = glGetUniformLocation(shader_program, "ourColor");
-    glUseProgram(shader_program);
-    glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
-}
-
-void Shader::move_shape_with_uniform(const std::string &name) const
-{
-    float timeValue = glfwGetTime();
-    float x_coordin = (std::sin(timeValue));
-    glm::mat4 trans;
-    trans = glm::scale(trans, glm::vec3(x_coordin, x_coordin, x_coordin));
-    trans = glm::translate(trans, glm::vec3(-0.5f, 0.5f, 0.0f));
-    glUniformMatrix4fv(glGetUniformLocation(shader_program, name.c_str()), 1, GL_FALSE, glm::value_ptr(trans));
-}
-
-void Shader::generate_perspective(const unsigned int index, glm::vec3 cameraPos, glm::vec3 cameraFront,
-                                  glm::vec3 cameraUp, float fov) const
-{
-        glm::vec3 cubePositions[] = {
-        glm::vec3( 0.0f,  0.0f,  0.0f),
-        glm::vec3( 2.0f,  5.0f, -15.0f),
-        glm::vec3(-1.5f, -2.2f, -2.5f),
-        glm::vec3(-3.8f, -2.0f, -12.3f),
-        glm::vec3( 2.4f, -0.4f, -3.5f),
-        glm::vec3(-1.7f,  3.0f, -7.5f),
-        glm::vec3( 1.3f, -2.0f, -2.5f),
-        glm::vec3( 1.5f,  2.0f, -2.5f),
-        glm::vec3( 1.5f,  0.2f, -1.5f),
-        glm::vec3(-1.3f,  1.0f, -1.5f)
-        };
-    glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-    glm::mat4 projection;
-    glm::mat4 model;
-    projection = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 100.0f);
-    float angle = 20.0f * index;
-    model = glm::translate(model, cubePositions[index]);
-    model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-    setMat4("projection", projection);
-    setMat4("model", model);
-    setMat4("view", view);
-}
-
-void Shader::rotate_cube(int i) const
-{
-    glm::mat4 model;
-    float angle = 20.0f * i;
-    model = glm::rotate(model, glm::radians(angle), glm::vec3(0.5f, -0.5f, 0.0f));
-    model = glm::translate(model, glm::vec3(0.5f, -0.5f, 0.0f));
-    int modelLoc = glGetUniformLocation(shader_program, "model");
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-}
 void Shader::setMat4(const std::string &name, const glm::mat4 &mat) const
 {
     glUniformMatrix4fv(glGetUniformLocation(shader_program, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
 
+void Shader::set_int(const std::string &name, int value) const
+{
+    glUniform1i(glGetUniformLocation(shader_program, name.c_str()), value);
+}
+
+void Shader::set_float(const std::string &name, float value) const
+{
+    glUniform1f(glGetUniformLocation(shader_program, name.c_str()), value);
+}
 
 

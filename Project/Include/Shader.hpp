@@ -9,22 +9,17 @@
 class Shader
 {
 public:
-    Shader(std::string path_to_vertex_shader, std::string path_to_fragment_shader);
-    void compile_shaders();
-    void Use();
+    Shader();
+    void compile_shaders(std::string vertex_shader_source_code, std::string fragment_shader_source_code);
+    Shader& Use();
     void set_int(const std::string &name, int value) const;
     void set_float(const std::string &name, float value) const;
-    void change_color_with_uniform() const;
-    void move_shape_with_uniform(const std::string &name) const;
-    void rotate_left(const std::string &name) const;
-    void generate_perspective(const unsigned int index, glm::vec3 cameraPos, glm::vec3 cameraFront, glm::vec3 cameraUp, float fov) const;
-    void rotate_cube(int i) const;
     void setMat4(const std::string &name, const glm::mat4 &mat) const;
+    GLuint get_shader_id();
 private:
-    unsigned int compile_vertex_shader();
-    unsigned int compile_fragment_shader();
-    bool compiled_succesed(unsigned int shader_id);
-    std::string vertex_shader;
-    std::string fragment_shader;
-    unsigned int shader_program;
+    unsigned int compile_vertex_shader(std::string vertex_shader_source_code);
+    unsigned int compile_fragment_shader(std::string fragment_shader_source_code);
+    bool link_shaders_and_compile();
+    bool compiled_succesed(unsigned int shader_id, int success);
+    GLuint shader_program;
 };
