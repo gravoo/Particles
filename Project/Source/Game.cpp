@@ -78,6 +78,8 @@ void Game::Render()
 {
     if(state == GameState::GAME_ACTIVE)
     {
+        renderer->DrawSprite(ResourceManager::GetTexture("hat_man1"), glm::vec2(450, 300), glm::vec2(100, 200), 0.0f );
+        renderer->DrawSprite(ResourceManager::GetTexture("hat_man1"), glm::vec2(420, 300), glm::vec2(100, 200), 0.0f );
         renderer->DrawSprite(ResourceManager::GetTexture("hat_man1"), glm::vec2(400, 300), glm::vec2(100, 200), 0.0f );
     }
 
