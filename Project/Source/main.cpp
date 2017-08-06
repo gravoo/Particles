@@ -41,9 +41,14 @@ int main()
     glEnable(GL_DEPTH_TEST);
 
     game.Init();
+    // DeltaTime variables
+
     while(!glfwWindowShouldClose(window))
     {
+        game.SyncroinzeTimers();
         glfwPollEvents();
+        game.ProcessInput();
+        game.UpdateState();
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         game.Render();

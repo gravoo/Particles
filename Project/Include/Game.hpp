@@ -17,8 +17,13 @@ public:
     GameState state;
     void Init();
     void Render();
+    void UpdateState();
+    void ProcessInput();
+    void SyncroinzeTimers();
     GLboolean keys[1024];
-    GLuint width, height;
 private:
+    GLuint width, height;
     std::unique_ptr<SpriteRenderer> renderer;
+    GLfloat deltaTime{0.0f};
+    GLfloat lastFrame{0.0f};
 };
