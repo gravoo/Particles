@@ -5,7 +5,7 @@ namespace
 const glm::vec2 PLAYER_SIZE(100, 20);
 const GLfloat PLAYER_VELOCITY(500.0f);
 // Initial velocity of the Ball
-const glm::vec2 INITIAL_BALL_VELOCITY(10.0f, -35.0f);
+const glm::vec2 INITIAL_BALL_VELOCITY(100.0f, -350.0f);
 // Radius of the ball object
 const GLfloat BALL_RADIUS = 12.5f;
 
@@ -51,7 +51,7 @@ void Game::Init()
 {
     ResourceManager::LoadShader("../Shaders/sprite.vs", "../Shaders/sprite.frag", "sprite");
     // Configure shaders
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(this->width), static_cast<GLfloat>(this->height), 0.0f, -1.0f, 1.0f);
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(width), static_cast<GLfloat>(height), 0.0f, -1.0f, 1.0f);
     ResourceManager::GetShader("sprite").Use().SetInteger("sprite", 0);
     ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
     // Load textures
@@ -60,19 +60,15 @@ void Game::Init()
     ResourceManager::LoadTexture("../Textures/block.png", GL_FALSE, "block");
     ResourceManager::LoadTexture("../Textures/block_solid.png", GL_FALSE, "block_solid");
     ResourceManager::LoadTexture("../Textures/paddle.png", true, "paddle");
+    ResourceManager::LoadTexture("../Textures/hat_man1.png", true, "hat_man1");
+    ResourceManager::LoadTexture("../Textures/hat_man2.png", true, "hat_man2");
     // Load levels
-    GameLevel one; one.Load("../levels/one.lvl", this->width, this->height * 0.5);
-    GameLevel two; two.Load("../levels/two.lvl", this->width, this->height * 0.5);
-    GameLevel three; three.Load("../levels/three.lvl", this->width, this->height * 0.5);
-    GameLevel four; four.Load("../levels/four.lvl", this->width, this->height * 0.5);
-    this->Levels.push_back(one);
-    this->Levels.push_back(two);
-    this->Levels.push_back(three);
-    this->Levels.push_back(four);
-    this->Level = 0;
+    GameLevel one; one.Load("../levels/one.lvl", width, height * 0.5);
+    Levels.push_back(one);
+    Level = 0;
     // Set render-specific controls
     renderer = std::make_unique<SpriteRenderer>(ResourceManager::GetShader("sprite"));
-    glm::vec2 playerPos = glm::vec2(this->width / 2 - PLAYER_SIZE.x / 2, this->height - PLAYER_SIZE.y);
+    glm::vec2 playerPos = glm::vec2(width / 2 - PLAYER_SIZE.x / 2, height - PLAYER_SIZE.y);
     player = std::make_unique<GameObject>(playerPos, PLAYER_SIZE, ResourceManager::GetTexture("paddle"));
     glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2 - BALL_RADIUS, -BALL_RADIUS * 2);
     ball = std::make_unique<BallObject>(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, ResourceManager::GetTexture("face"));
@@ -82,10 +78,7 @@ void Game::Render()
 {
     if(state == GameState::GAME_ACTIVE)
     {
-        ball->Draw(*renderer);
-        player->Draw(*renderer);
-        Levels[Level].Draw(*renderer);
-        renderer->DrawSprite(ResourceManager::GetTexture("paddle"), glm::vec2(0, 0), glm::vec2(width, height), 0.0f );
+        renderer->DrawSprite(ResourceManager::GetTexture("hat_man1"), glm::vec2(400, 300), glm::vec2(100, 200), 0.0f );
     }
 
 }
@@ -95,7 +88,7 @@ void Game::ProcessInput()
     if (state == GameState::GAME_ACTIVE)
     {
         GLfloat velocity = PLAYER_VELOCITY * deltaTime;
-        if (this->keys[GLFW_KEY_A])
+        if (keys[GLFW_KEY_A])
         {
             if (player->Position.x >= 0)
             {
@@ -104,9 +97,9 @@ void Game::ProcessInput()
                     ball->Position.x -= velocity;
             }
         }
-        if (this->keys[GLFW_KEY_D])
+        if (keys[GLFW_KEY_D])
         {
-            if (player->Position.x <= this->width - player->Size.x)
+            if (player->Position.x <= width - player->Size.x)
             {
                 player->Position.x += velocity;
                 if (ball->Stuck)
@@ -132,7 +125,7 @@ void Game::SyncroinzeTimers()
 }
 void Game::DoCollisions()
 {
-    for (GameObject &box : this->Levels[this->Level].Bricks)
+    for (GameObject &box : Levels[Level].Bricks)
     {
         if (!box.Destroyed)
         {
