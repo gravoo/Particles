@@ -6,6 +6,8 @@
 #include <GameLevel.hpp>
 #include <GameObject.hpp>
 #include <BallObject.hpp>
+#include <Camera.hpp>
+
 enum class GameState {
     GAME_ACTIVE,
     GAME_MENU,
@@ -23,6 +25,7 @@ public:
     void ProcessInput();
     void SyncroinzeTimers();
     void DoCollisions();
+    void setMousePosition(GLfloat x, GLfloat y);
     GLboolean keys[1024];
     std::vector<GameLevel> Levels;
     GLuint                 Level;
@@ -31,6 +34,8 @@ private:
     std::unique_ptr<SpriteRenderer> renderer;
     std::unique_ptr<GameObject> player;
     std::unique_ptr<BallObject> ball;
+    Camera camera;
     GLfloat deltaTime{0.0f};
     GLfloat lastFrame{0.0f};
+    GLfloat x{0},y{0};
 };

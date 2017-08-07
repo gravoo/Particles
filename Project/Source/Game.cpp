@@ -1,5 +1,6 @@
 #include <Game.hpp>
 #include <ResourceManager.hpp>
+#include <iostream>
 namespace
 {
 const glm::vec2 PLAYER_SIZE(100, 20);
@@ -43,7 +44,7 @@ GLboolean CheckCollision(BallObject &one, GameObject &two) // AABB - Circle coll
 
 }
 Game::Game(GLuint width, GLuint height)
-: state(GameState::GAME_ACTIVE), width(width), height(height)
+: state(GameState::GAME_ACTIVE), width(width), height(height), camera(glm::vec3(0.0f, 0.0f, 3.0f))
 {
 }
 
@@ -78,7 +79,7 @@ void Game::Render()
 {
     if(state == GameState::GAME_ACTIVE)
     {
-        renderer->DrawSprite(ResourceManager::GetTexture("hat_man1"), glm::vec2(450, 300), glm::vec2(100, 200), 0.0f );
+        renderer->DrawSprite(ResourceManager::GetTexture("hat_man1"), glm::vec2(x, y), glm::vec2(100, 200), 0.0f );
         renderer->DrawSprite(ResourceManager::GetTexture("hat_man1"), glm::vec2(420, 300), glm::vec2(100, 200), 0.0f );
         renderer->DrawSprite(ResourceManager::GetTexture("hat_man1"), glm::vec2(400, 300), glm::vec2(100, 200), 0.0f );
     }
@@ -110,6 +111,10 @@ void Game::ProcessInput()
         }
         if (keys[GLFW_KEY_SPACE])
             ball->Stuck = false;
+
+        if(keys[GLFW_MOUSE_BUTTON_LEFT])
+        {
+        }
     }
 }
 
@@ -138,4 +143,10 @@ void Game::DoCollisions()
             }
         }
     }
+}
+void Game::setMousePosition(GLfloat x, GLfloat y)
+{
+    this->x=x;
+    this->y=y;
+    std::cout<<x<<" "<<y;
 }

@@ -9,6 +9,8 @@
 const GLuint SCREEN_WIDTH = 800;
 const GLuint SCREEN_HEIGHT = 600;
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
+void mouse_callback(GLFWwindow* window, int key, int action, int mods);
+void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 
 Game game{SCREEN_WIDTH, SCREEN_HEIGHT};
 int main()
@@ -33,6 +35,7 @@ int main()
     }
 
     glfwSetKeyCallback(window, key_callback);
+    glfwSetMouseButtonCallback(window, mouse_callback);
     // OpenGL configuration
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     glEnable(GL_CULL_FACE);
@@ -70,4 +73,23 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         else if (action == GLFW_RELEASE)
             game.keys[key] = GL_FALSE;
     }
+}
+void mouse_callback(GLFWwindow* window, int key, int action, int mods)
+{
+    if (key == GLFW_MOUSE_BUTTON_LEFT)
+    {
+        if (action == GLFW_PRESS)
+        {
+            game.keys[key] = GL_TRUE;
+            double x, y;
+            glfwGetCursorPos(window, &x, &y);
+            game.setMousePosition(x,y);
+        }
+        else if (action == GLFW_RELEASE)
+            game.keys[key] = GL_FALSE;
+    }
+}
+void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
+{
+
 }

@@ -26,6 +26,7 @@ public:
     void ProcessKeyboard(Camera_Movement direction, float deltaTime);
     void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
     void ProcessMouseScroll(float yoffset);
+    float Zoom;
 private:
     void updateCameraVectors();
     glm::vec3 Position;
@@ -37,5 +38,4 @@ private:
     float Pitch;
     float MovementSpeed;
     float MouseSensitivity;
-    float Zoom;
 };
