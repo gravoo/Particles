@@ -9,11 +9,13 @@ namespace
     const float PITCH      =  0.0f;
 }
 
-enum Camera_Movement {
+enum class Camera_Movement {
     FORWARD,
     BACKWARD,
     LEFT,
-    RIGHT
+    RIGHT,
+    UP,
+    DOWN
 };
 
 class Camera

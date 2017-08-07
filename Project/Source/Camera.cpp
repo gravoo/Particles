@@ -2,7 +2,7 @@
 
 namespace
 {
-const float SPEED      =  2.5f;
+const float SPEED      =  100.f;
 const float SENSITIVTY =  0.1f;
 const float ZOOM       =  45.0f;
 }
@@ -45,14 +45,18 @@ void Camera::updateCameraVectors()
 void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
 {
     float velocity = MovementSpeed * deltaTime;
-    if (direction == FORWARD)
+    if (direction == Camera_Movement::FORWARD)
         Position += Front * velocity;
-    if (direction == BACKWARD)
+    if (direction == Camera_Movement::BACKWARD)
         Position -= Front * velocity;
-    if (direction == LEFT)
+    if (direction == Camera_Movement::LEFT)
         Position -= Right * velocity;
-    if (direction == RIGHT)
+    if (direction == Camera_Movement::RIGHT)
         Position += Right * velocity;
+    if (direction == Camera_Movement::UP)
+        Position += Up * velocity;
+    if (direction == Camera_Movement::DOWN)
+        Position -= Up * velocity;
 }
 void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch)
 {

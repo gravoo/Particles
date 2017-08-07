@@ -52,8 +52,10 @@ void Game::Init()
 {
     ResourceManager::LoadShader("../Shaders/sprite.vs", "../Shaders/sprite.frag", "sprite");
     // Configure shaders
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(width), static_cast<GLfloat>(height), 0.0f, -1.0f, 1.0f);
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(width), static_cast<GLfloat>(height), 0.0f, -1.0f, 100.0f);
+    glm::mat4 view = camera.GetViewMatrix();
     ResourceManager::GetShader("sprite").Use().SetInteger("sprite", 0);
+    ResourceManager::GetShader("sprite").Use().SetMatrix4("view", view);
     ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
     // Load textures
     ResourceManager::LoadTexture("../Textures/background.jpg", GL_FALSE, "background");
@@ -79,9 +81,9 @@ void Game::Render()
 {
     if(state == GameState::GAME_ACTIVE)
     {
-        renderer->DrawSprite(ResourceManager::GetTexture("hat_man1"), glm::vec2(x, y), glm::vec2(100, 200), 0.0f );
-        renderer->DrawSprite(ResourceManager::GetTexture("hat_man1"), glm::vec2(420, 300), glm::vec2(100, 200), 0.0f );
-        renderer->DrawSprite(ResourceManager::GetTexture("hat_man1"), glm::vec2(400, 300), glm::vec2(100, 200), 0.0f );
+        glm::mat4 view = camera.GetViewMatrix();
+        ResourceManager::GetShader("sprite").Use().SetMatrix4("view", view);
+        renderer->DrawSprite(ResourceManager::GetTexture("face"), glm::vec2(x, y), glm::vec2(100, 200), 0.0f );
     }
 
 }
@@ -90,31 +92,26 @@ void Game::ProcessInput()
 {
     if (state == GameState::GAME_ACTIVE)
     {
-        GLfloat velocity = PLAYER_VELOCITY * deltaTime;
-        if (keys[GLFW_KEY_A])
-        {
-            if (player->Position.x >= 0)
-            {
-                player->Position.x -= velocity;
-                if (ball->Stuck)
-                    ball->Position.x -= velocity;
-            }
-        }
-        if (keys[GLFW_KEY_D])
-        {
-            if (player->Position.x <= width - player->Size.x)
-            {
-                player->Position.x += velocity;
-                if (ball->Stuck)
-                    ball->Position.x += velocity;
-            }
-        }
-        if (keys[GLFW_KEY_SPACE])
-            ball->Stuck = false;
-
         if(keys[GLFW_MOUSE_BUTTON_LEFT])
         {
         }
+        if (keys[GLFW_KEY_W] )
+        {
+            camera.ProcessKeyboard(Camera_Movement::UP, deltaTime);
+        }
+        if (keys[GLFW_KEY_S])
+        {
+            camera.ProcessKeyboard(Camera_Movement::DOWN, deltaTime);
+        }
+        if (keys[GLFW_KEY_A])
+        {
+            camera.ProcessKeyboard(Camera_Movement::LEFT, deltaTime);
+        }
+        if (keys [GLFW_KEY_D])
+        {
+            camera.ProcessKeyboard(Camera_Movement::RIGHT, deltaTime);
+        }
+
     }
 }
 
@@ -148,5 +145,4 @@ void Game::setMousePosition(GLfloat x, GLfloat y)
 {
     this->x=x;
     this->y=y;
-    std::cout<<x<<" "<<y;
 }
