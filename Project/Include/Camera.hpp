@@ -10,8 +10,6 @@ namespace
 }
 
 enum class Camera_Movement {
-    FORWARD,
-    BACKWARD,
     LEFT,
     RIGHT,
     UP,

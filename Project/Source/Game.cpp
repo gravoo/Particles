@@ -145,4 +145,5 @@ void Game::setMousePosition(GLfloat x, GLfloat y)
 {
     this->x=x;
     this->y=y;
+    std::cout<<x<<" "<<y<<std::endl;
 }
