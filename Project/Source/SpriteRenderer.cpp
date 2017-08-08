@@ -43,12 +43,8 @@ void SpriteRenderer::DrawSprite(Texture texture, glm::vec2 position,
     shader.Use();
     glm::mat4 model;
     model = glm::translate(model, glm::vec3( glm::vec2(position), 0.0f));
-
-//     model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
-//     model = glm::rotate(model, rotate, glm::vec3(0.0f, 0.0f, 1.0f));
-//     model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
-
     model = glm::scale(model, glm::vec3(size, 1.0f));
+//     model = glm::rotate(model, rotate, glm::vec3(0.0f, 0.0f, 1.0f));
 
     shader.SetMatrix4("model", model);
     shader.SetVector3f("spriteColor", color);

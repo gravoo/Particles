@@ -2,14 +2,22 @@
 BuildItems=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x00\x00\x02\x00\x00\x00\x0e\x00P\x00r\x00o\x00j\x00e\x00c\x00t\x00\x00\x00\n\x00b\x00u\x00i\x00l\x00d)
 
 [CMake]
-Build Directory Count=1
-Current Build Directory Index=0
+Build Directory Count=2
+Current Build Directory Index=1
 
 [CMake][CMake Build Directory 0]
 Build Directory Path=/home/gravoo/Projects/Particles/Project/build
 Build Type=Debug
 CMake Binary=/usr/bin/cmake
 Environment Profile=default
+Extra Arguments=
+Install Directory=/usr/local
+
+[CMake][CMake Build Directory 1]
+Build Directory Path=/home/bsadowsk/Projects/Particles/Project/build
+Build Type=
+CMake Binary=/usr/bin/cmake
+Environment Profile=
 Extra Arguments=
 Install Directory=/usr/local
 
@@ -23,9 +31,9 @@ parserArgumentsC=-ferror-limit=100 -fspell-checking -Wdocumentation -Wunused-par
 Name=Clang
 
 [CustomDefinesAndIncludes][ProjectPath0][Includes]
-1=/home/gravoo/Projects/Particles/Project/Include/
-2=/home/gravoo/Projects/Particles/Project/glad/include/
-3=/home/gravoo/Projects/Particles/Project/glm/
+1=/home/bsadowsk/Projects/Particles/Project/Include
+2=/home/bsadowsk/Projects/Particles/Project/glad/include/
+3=/home/bsadowsk/Projects/Particles/Project/glm/
 
 [Filters]
 size=33
@@ -209,9 +217,9 @@ Arguments=
 Dependencies=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x02\x00\x00\x00\x0b\x00\x00\x00\x00\x01\x00\x00\x00\n\x00U\x00t\x00i\x00l\x00s\x00\x00\x00\x0b\x00\x00\x00\x00\x01\x00\x00\x00\x0e\x00P\x00r\x00o\x00j\x00e\x00c\x00t)
 Dependency Action=Build
 EnvironmentGroup=
-Executable=file:///home/gravoo/Projects/Particles/Project/build/Particles
+Executable=file:///home/bsadowsk/Projects/Particles/Project/build/Particles
 External Terminal=konsole --noclose --workdir %workdir -e %exe
-Project Target=
+Project Target=Project,Particles
 Use External Terminal=false
 Working Directory=
 isExecutable=true

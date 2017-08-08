@@ -2,11 +2,19 @@
 BuildItems=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x00\x00\x01\x00\x00\x00\n\x00U\x00t\x00i\x00l\x00s)
 
 [CMake]
-Build Directory Count=1
-Current Build Directory Index=0
+Build Directory Count=2
+Current Build Directory Index=1
 
 [CMake][CMake Build Directory 0]
 Build Directory Path=/home/gravoo/Projects/Particles/Project/Utils/build
+Build Type=
+CMake Binary=/usr/bin/cmake
+Environment Profile=
+Extra Arguments=
+Install Directory=/usr/local
+
+[CMake][CMake Build Directory 1]
+Build Directory Path=/home/bsadowsk/Projects/Particles/Project/Utils/build
 Build Type=
 CMake Binary=/usr/bin/cmake
 Environment Profile=

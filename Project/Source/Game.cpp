@@ -66,7 +66,8 @@ void Game::Init()
     ResourceManager::LoadTexture("../Textures/hat_man1.png", true, "hat_man1");
     ResourceManager::LoadTexture("../Textures/hat_man2.png", true, "hat_man2");
     // Load levels
-    GameLevel one; one.Load("../levels/one.lvl", width, height * 0.5);
+    GameLevel one;
+    one.Load("../levels/one.lvl", width, height);
     Levels.push_back(one);
     Level = 0;
     // Set render-specific controls
@@ -82,8 +83,11 @@ void Game::Render()
     if(state == GameState::GAME_ACTIVE)
     {
         glm::mat4 view = camera.GetViewMatrix();
+        view = glm::rotate(view, 0.53130f, glm::vec3(0.0f, 0.0f, 1.0f));
         ResourceManager::GetShader("sprite").Use().SetMatrix4("view", view);
         renderer->DrawSprite(ResourceManager::GetTexture("face"), glm::vec2(x, y), glm::vec2(100, 200), 0.0f );
+        renderer->DrawSprite(ResourceManager::GetTexture("hat_man1"), glm::vec2(30, 100), glm::vec2(100, 200), 0.0f );
+        Levels[Level].Draw(*renderer);
     }
 
 }
