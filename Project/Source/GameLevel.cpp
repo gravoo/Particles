@@ -71,6 +71,7 @@ void GameLevel::init(std::vector<std::vector<GLuint>> tileData, GLuint lvlWidth,
         }
     }
 }
+
 void GameLevel::Draw(SpriteRenderer &renderer)
 {
     for (GameObject &tile : Bricks)

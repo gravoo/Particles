@@ -44,7 +44,8 @@ GLboolean CheckCollision(BallObject &one, GameObject &two) // AABB - Circle coll
 
 }
 Game::Game(GLuint width, GLuint height)
-: state(GameState::GAME_ACTIVE), width(width), height(height), camera(glm::vec3(0.0f, 0.0f, 3.0f))
+: state(GameState::GAME_ACTIVE), width(width), height(height), camera(glm::vec3(0.0f, 0.0f, 3.0f)), lastMousePosX(width/2), lastMousePosY(height/2),
+cameraOffset(glm::vec2(0.0f, 0.0f))
 {
 }
 
@@ -83,10 +84,11 @@ void Game::Render()
     if(state == GameState::GAME_ACTIVE)
     {
         glm::mat4 view = camera.GetViewMatrix();
-        view = glm::rotate(view, 0.53130f, glm::vec3(0.0f, 0.0f, 1.0f));
+        view = glm::rotate(view, 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
         ResourceManager::GetShader("sprite").Use().SetMatrix4("view", view);
-        renderer->DrawSprite(ResourceManager::GetTexture("face"), glm::vec2(x, y), glm::vec2(100, 200), 0.0f );
+        renderer->DrawSprite(ResourceManager::GetTexture("face"), glm::vec2(0, 0), glm::vec2(100, 200), 0.0f );
         renderer->DrawSprite(ResourceManager::GetTexture("hat_man1"), glm::vec2(30, 100), glm::vec2(100, 200), 0.0f );
+        renderer->DrawSprite(ResourceManager::GetTexture("hat_man1"), cameraOffset, glm::vec2(100, 200), 0.0f );
         Levels[Level].Draw(*renderer);
     }
 
@@ -145,9 +147,26 @@ void Game::DoCollisions()
         }
     }
 }
-void Game::setMousePosition(GLfloat x, GLfloat y)
+void Game::setMousePosition(GLfloat xpos, GLfloat ypos)
 {
-    this->x=x;
-    this->y=y;
-    std::cout<<x<<" "<<y<<std::endl;
+    float xPosOffset = lastMousePosX - xpos;
+    float yPosOffset = ypos - lastMousePosY;
+    std::cout<<xPosOffset<<" "<<yPosOffset<<std::endl;
+    cameraOffset=+glm::vec2(xpos,ypos)+camera.GetCameraCord();
 }
+void Game::setLastMousePosition(GLfloat x, GLfloat y)
+{
+    if(firstMousePos)
+    {
+        lastMousePosX = x;
+        lastMousePosY = y;
+        firstMousePos = false;
+    }
+    float xPosOffset = lastMousePosX - x;
+    float yPosOffset = y - lastMousePosY;
+    std::cout<<xPosOffset<<" "<<yPosOffset<<std::endl;
+    lastMousePosX = x;
+    lastMousePosY = y;
+
+}
+

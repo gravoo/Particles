@@ -1,5 +1,5 @@
 #include <Camera.hpp>
-
+#include <iostream>
 namespace
 {
 const float SPEED      =  100.f;
@@ -83,6 +83,11 @@ void Camera::ProcessMouseScroll(float yoffset)
         Zoom = 1.0f;
     if (Zoom >= 45.0f)
         Zoom = 45.0f;
+}
+
+glm::vec2 Camera::GetCameraCord()
+{
+    return glm::vec2(Position.x, Position.y);
 }
 
 

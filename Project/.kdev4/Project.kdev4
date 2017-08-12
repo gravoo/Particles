@@ -3,7 +3,7 @@ BuildItems=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x
 
 [CMake]
 Build Directory Count=2
-Current Build Directory Index=1
+Current Build Directory Index=0
 
 [CMake][CMake Build Directory 0]
 Build Directory Path=/home/gravoo/Projects/Particles/Project/build
@@ -217,7 +217,7 @@ Arguments=
 Dependencies=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x02\x00\x00\x00\x0b\x00\x00\x00\x00\x01\x00\x00\x00\n\x00U\x00t\x00i\x00l\x00s\x00\x00\x00\x0b\x00\x00\x00\x00\x01\x00\x00\x00\x0e\x00P\x00r\x00o\x00j\x00e\x00c\x00t)
 Dependency Action=Build
 EnvironmentGroup=
-Executable=file:///home/bsadowsk/Projects/Particles/Project/build/Particles
+Executable=file:///home/gravoo/Projects/Particles/Project/build/Particles
 External Terminal=konsole --noclose --workdir %workdir -e %exe
 Project Target=Project,Particles
 Use External Terminal=false

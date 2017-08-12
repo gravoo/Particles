@@ -26,6 +26,7 @@ public:
     void ProcessKeyboard(Camera_Movement direction, float deltaTime);
     void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
     void ProcessMouseScroll(float yoffset);
+    glm::vec2 GetCameraCord();
     float Zoom;
 private:
     void updateCameraVectors();
