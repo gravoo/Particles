@@ -7,6 +7,8 @@
 #include <GameObject.hpp>
 #include <BallObject.hpp>
 #include <Camera.hpp>
+#include <GameBuildUnit.hpp>
+#include <vector>
 
 enum class GameState {
     GAME_ACTIVE,
@@ -31,15 +33,19 @@ public:
     std::vector<GameLevel> Levels;
     GLuint                 Level;
 private:
+    void DetectMouseClick();
     GLuint width, height;
     std::unique_ptr<SpriteRenderer> renderer;
     std::unique_ptr<GameObject> player;
     std::unique_ptr<BallObject> ball;
+    std::unique_ptr<GameBuildUnit> buildUnit;
+    std::vector<std::shared_ptr<GameBuildUnit>> moveableUnits;
     Camera camera;
     GLfloat deltaTime{0.0f};
     GLfloat lastFrame{0.0f};
     GLfloat x{0},y{0};
     glm::vec2 cameraOffset;
+    glm::vec2 mousePosition;
     GLfloat lastMousePosX,lastMousePosY;
     bool firstMousePos{true};
     glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  3.0f);
