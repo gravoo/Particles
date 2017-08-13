@@ -7,8 +7,8 @@ const float SENSITIVTY =  0.1f;
 const float ZOOM       =  45.0f;
 }
 
-Camera::Camera( glm::vec3 position, glm::vec3 up, float yaw, float pitch )
-        : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVTY), Zoom(ZOOM)
+Camera::Camera( glm::vec3 position, glm::vec3 up, float yaw, float pitch , GLuint width, GLuint height)
+        : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVTY), Zoom(ZOOM), width(width), height(height)
 {
     Position = position;
     WorldUp = up;
@@ -30,6 +30,11 @@ glm::mat4 Camera::GetViewMatrix()
 {
     return glm::lookAt(Position, Position + Front, Up);
 }
+glm::mat4 Camera::getProjectionMatrix()
+{
+    return glm::ortho(0.0f, static_cast<GLfloat>(width), static_cast<GLfloat>(height), 0.0f, -1.0f, 100.0f);
+}
+
 void Camera::updateCameraVectors()
 {
     // Calculate the new Front vector

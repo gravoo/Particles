@@ -43,11 +43,9 @@ void Game::Init()
 {
     ResourceManager::LoadShader("../Shaders/sprite.vs", "../Shaders/sprite.frag", "sprite");
     // Configure shaders
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(width), static_cast<GLfloat>(height), 0.0f, -1.0f, 100.0f);
-    glm::mat4 view = camera.GetViewMatrix();
     ResourceManager::GetShader("sprite").Use().SetInteger("sprite", 0);
-    ResourceManager::GetShader("sprite").Use().SetMatrix4("view", view);
-    ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
+    ResourceManager::GetShader("sprite").Use().SetMatrix4("view", camera.GetViewMatrix());
+    ResourceManager::GetShader("sprite").SetMatrix4("projection", camera.getProjectionMatrix());
     // Load textures
     ResourceManager::LoadTexture("../Textures/background.jpg", GL_FALSE, "background");
     ResourceManager::LoadTexture("../Textures/face.png", GL_TRUE, "face");
@@ -138,8 +136,20 @@ void Game::DetectMouseClick()
 }
 void Game::setMousePosition(GLfloat xpos, GLfloat ypos)
 {
-    mousePosition=glm::vec2(xpos,ypos);
-    cameraOffset=+mousePosition+camera.GetCameraCord();
+    float mouseX = xpos / (width  * 0.5f) - 1.0f;
+    float mouseY = ypos / (height * 0.5f) - 1.0f;
+    glm::mat4 invVP = glm::inverse(camera.getProjectionMatrix() * camera.GetViewMatrix());
+    glm::vec4 screenPos = glm::vec4(mouseX, -mouseY, 1.0f, 1.0f);
+    glm::vec4 worldPos = invVP * screenPos;
+    glm::vec3 dir = glm::normalize(glm::vec3(worldPos));
+    std::cout<<"World mouse Position "<<worldPos.x<<" "<<worldPos.y<<std::endl;
+    std::cout<<"camera is in pos"<<camera.GetCameraCord().x<<" "<<camera.GetCameraCord().y<<std::endl;
+    glm::vec4 viewport = glm::vec4(0, 0, width, height);
+    glm::vec3 wincoord = glm::vec3(xpos, height - ypos - 1.0f, 1.0f);
+    glm::vec3 objcoord = glm::unProject(wincoord, camera.GetViewMatrix(), camera.getProjectionMatrix(), viewport);
+    std::cout<<"World mouse unProject "<<objcoord.x<<" "<<objcoord.y<<std::endl;
+    mousePosition=glm::vec2(objcoord.x, objcoord.y);
+    cameraOffset=glm::vec2(objcoord.x, objcoord.y);
     DetectMouseClick();
 }
 void Game::setLastMousePosition(GLfloat x, GLfloat y)
