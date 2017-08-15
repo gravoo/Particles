@@ -5,11 +5,13 @@
 #include <SpriteRenderer.hpp>
 #include <GameObject.hpp>
 #include <ResourceManager.hpp>
-
+#include <GameGrid.hpp>
+//
 class GameLevel
 {
 public:
     std::vector<GameObject> Bricks;
+    std::vector<GameGrid> grid;
     GameLevel() { }
     void Load(const GLchar *file, GLuint levelWidth, GLuint levelHeight);
     void Draw(SpriteRenderer &renderer);

@@ -112,7 +112,7 @@ void Game::ProcessInput()
 
 void Game::UpdateState()
 {
-    buildUnit->move(cameraOffset, deltaTime);
+    buildUnit->move(mousePosition, deltaTime);
 }
 
 void Game::SyncroinzeTimers()
@@ -126,7 +126,7 @@ void Game::DetectMouseClick()
 {
     if(buildUnit->selected)
     {
-        buildUnit->setDestinationToTravel(cameraOffset);
+        buildUnit->setDestinationToTravel(mousePosition);
     }
     if (detectMouseClick(*buildUnit, mousePosition))
     {
@@ -136,22 +136,14 @@ void Game::DetectMouseClick()
 }
 void Game::setMousePosition(GLfloat xpos, GLfloat ypos)
 {
-    float mouseX = xpos / (width  * 0.5f) - 1.0f;
-    float mouseY = ypos / (height * 0.5f) - 1.0f;
-    glm::mat4 invVP = glm::inverse(camera.getProjectionMatrix() * camera.GetViewMatrix());
-    glm::vec4 screenPos = glm::vec4(mouseX, -mouseY, 1.0f, 1.0f);
-    glm::vec4 worldPos = invVP * screenPos;
-    glm::vec3 dir = glm::normalize(glm::vec3(worldPos));
-    std::cout<<"World mouse Position "<<worldPos.x<<" "<<worldPos.y<<std::endl;
-    std::cout<<"camera is in pos"<<camera.GetCameraCord().x<<" "<<camera.GetCameraCord().y<<std::endl;
     glm::vec4 viewport = glm::vec4(0, 0, width, height);
     glm::vec3 wincoord = glm::vec3(xpos, height - ypos - 1.0f, 1.0f);
     glm::vec3 objcoord = glm::unProject(wincoord, camera.GetViewMatrix(), camera.getProjectionMatrix(), viewport);
     std::cout<<"World mouse unProject "<<objcoord.x<<" "<<objcoord.y<<std::endl;
     mousePosition=glm::vec2(objcoord.x, objcoord.y);
-    cameraOffset=glm::vec2(objcoord.x, objcoord.y);
     DetectMouseClick();
 }
+
 void Game::setLastMousePosition(GLfloat x, GLfloat y)
 {
     if(firstMousePos)
