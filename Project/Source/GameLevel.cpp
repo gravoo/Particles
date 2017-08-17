@@ -33,9 +33,9 @@ void GameLevel::init(std::vector<std::vector<GLuint>> tileData, GLuint lvlWidth,
     // Calculate dimensions
     GLuint height = tileData.size();
     GLuint width = tileData[0].size();
+    grid = GridWithWeights(width,height);
     GLfloat unit_width = lvlWidth / static_cast<GLfloat>(width);
     GLfloat unit_height = lvlHeight / height;
-    GameGrid grid(height, width);
     // Initialize level tiles based on tileData
     for (GLuint y = 0; y < height; ++y)
     {
@@ -48,11 +48,10 @@ void GameLevel::init(std::vector<std::vector<GLuint>> tileData, GLuint lvlWidth,
                 glm::vec2 size(unit_width, unit_height);
                 GameObject obj(pos, size,
                     ResourceManager::GetTexture("block_solid"),
-                    glm::vec3(0.8f, 0.8f, 0.7f)
-                );
-                grid.walls.insert(GameGrid::Location { x, y });
+                    glm::vec3(0.8f, 0.8f, 0.7f), glm::vec2(0.0f, 0.0f), GameGrid::Location { x, y } );
                 obj.IsSolid = GL_TRUE;
                 this->Bricks.push_back(obj);
+                grid.walls.insert(GameGrid::Location { x, y });
             }
             else if (tileData[y][x] > 1)
             {
@@ -69,7 +68,7 @@ void GameLevel::init(std::vector<std::vector<GLuint>> tileData, GLuint lvlWidth,
                 glm::vec2 pos(unit_width * x, unit_height * y);
                 glm::vec2 size(unit_width, unit_height);
                 this->Bricks.push_back(
-                    GameObject(pos, size, ResourceManager::GetTexture("block"), color)
+                    GameObject(pos, size, ResourceManager::GetTexture("block"), color, glm::vec2(0.0f, 0.0f), GameGrid::Location { x, y })
                 );
             }
         }

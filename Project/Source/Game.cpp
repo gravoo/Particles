@@ -26,10 +26,17 @@ GLboolean detectMouseClick(GameObject &one, glm::vec2 &two) // AABB - AABB colli
 {
     bool collisionX = one.Position.x + one.Size.x >= two.x && two.x >= one.Position.x;
     bool collisionY = one.Position.y + one.Size.y >= two.y && two.y >= one.Position.y;
-    std::cout<<one.Position.x + one.Size.x<<" "<<two.x<<" "<<collisionX<<std::endl;
-    std::cout<<one.Position.y + one.Size.y<<" "<<two.y<<" "<<collisionY<<std::endl;
+//     std::cout<<one.Position.x + one.Size.x<<" "<<two.x<<" "<<collisionX<<std::endl;
+//     std::cout<<one.Position.y + one.Size.y<<" "<<two.y<<" "<<collisionY<<std::endl;
     // Collision only if on both axes
     return collisionX && collisionY;
+}
+
+std::basic_iostream<char>::basic_ostream& operator<<(std::basic_iostream<char>::basic_ostream& out, std::tuple<int,int> loc) {
+  int x, y;
+  std::tie (x, y) = loc;
+  out << '(' << x << ',' << y << ')';
+  return out;
 }
 
 }
@@ -65,9 +72,10 @@ void Game::Init()
     player = std::make_unique<GameObject>(playerPos, PLAYER_SIZE, ResourceManager::GetTexture("paddle"));
     glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2 - BALL_RADIUS, -BALL_RADIUS * 2);
     ball = std::make_unique<BallObject>(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, ResourceManager::GetTexture("face"));
-    glm::vec2 unitPos =  glm::vec2(width / 2, height / 2);
-    glm::vec2 unitSize =  glm::vec2(width / 3, height / 3);
-    buildUnit = std::make_unique<GameBuildUnit>(unitPos, unitSize, INITIAL_BALL_VELOCITY, ResourceManager::GetTexture("hat_man1"));
+    glm::vec2 unitPos =  glm::vec2(0, 0);
+    glm::vec2 unitSize =  glm::vec2(60, 40);
+    buildUnit = std::make_unique<GameBuildUnit>(unitPos, unitSize, INITIAL_BALL_VELOCITY, ResourceManager::GetTexture("hat_man1"),
+                                                GameGrid::Location{0, 0});
 }
 
 void Game::Render()
@@ -124,14 +132,24 @@ void Game::SyncroinzeTimers()
 
 void Game::DetectMouseClick()
 {
-    if(buildUnit->selected)
+    for(auto &x : Levels.back().Bricks)
     {
-        buildUnit->setDestinationToTravel(mousePosition);
+        if (detectMouseClick(x, mousePosition))
+        {
+            if(!x.IsSolid)
+            {
+                std::cout<<"Mouse clicked on brick "<<x.id<<std::endl;
+                if(buildUnit->selected)
+                {
+                    buildUnit->setDestinationToTravel(x, Levels.back());
+                }
+            }
+        }
     }
     if (detectMouseClick(*buildUnit, mousePosition))
     {
-        if(buildUnit->changeSelected())
-            std::cout<<"UNIT SELECTED"<<std::endl;
+        buildUnit->changeSelected();
+        std::cout<<"Mouse clicked on buildUnit "<<std::endl;
     }
 }
 void Game::setMousePosition(GLfloat xpos, GLfloat ypos)
@@ -144,16 +162,4 @@ void Game::setMousePosition(GLfloat xpos, GLfloat ypos)
     DetectMouseClick();
 }
 
-void Game::setLastMousePosition(GLfloat x, GLfloat y)
-{
-    if(firstMousePos)
-    {
-        lastMousePosX = x;
-        lastMousePosY = y;
-        firstMousePos = false;
-    }
-    lastMousePosX = x;
-    lastMousePosY = y;
-
-}
 

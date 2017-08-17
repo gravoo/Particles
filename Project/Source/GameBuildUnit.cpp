@@ -1,32 +1,57 @@
 #include<GameBuildUnit.hpp>
 #include<iostream>
+namespace
+{
+std::basic_iostream<char>::basic_ostream& operator<<(std::basic_iostream<char>::basic_ostream& out, std::tuple<int,int> loc) {
+  int x, y;
+  std::tie (x, y) = loc;
+  out << '(' << x << ',' << y << ')';
+  return out;
+}
 
-GameBuildUnit::GameBuildUnit(glm::vec2 pos, glm::vec2 size, glm::vec2 velocity, Texture sprite)
-    : GameObject(pos, size, sprite, glm::vec3(1.0f), velocity), destination(glm::vec2(0.0f, 0.0f))
+glm::vec2 getPosition(std::tuple<int,int> loc)
+{
+    int x, y;
+    std::tie (x, y) = loc;
+    return glm::vec2(x,y);
+}
+
+}
+GameBuildUnit::GameBuildUnit(glm::vec2 pos, glm::vec2 size, glm::vec2 velocity, Texture sprite,  GameGrid::Location id)
+    : GameObject(pos, size, sprite, glm::vec3(1.0f), velocity, id), destination(GameObject())
 {
 
 }
 
 void GameBuildUnit::move(glm::vec2 pos, GLfloat dt)
 {
-    if(selected)
+    if(!path.empty())
     {
-        if(destination.x && destination.y)
+        if(selected)
         {
-            std::cout<<Position.x<<" "<<Position.y<<std::endl;
-            std::cout<<destination.x<<" "<<destination.y<<std::endl;
-            Position = destination;
+            id = path.back();
+            this->Position = getPosition(path.back()) * destination.Size;
         }
+        path.pop_back();
     }
 }
 
 bool GameBuildUnit::changeSelected()
 {
-    destination = glm::vec2(0, 0);
+    destination = GameObject();
     return selected=(selected)?false:true;
 }
 
-void GameBuildUnit::setDestinationToTravel(glm::vec2 pos)
+void GameBuildUnit::setDestinationToTravel(GameObject &gameObject,const GameLevel& level)
 {
-    destination = pos;
+    destination = gameObject;
+    std::unordered_map<GameGrid::Location, GameGrid::Location> came_from;
+    std::unordered_map<GameGrid::Location, double> cost_so_far;
+    a_star_search(level.grid, id, destination.id, came_from, cost_so_far);
+    path = reconstruct_path(id, destination.id, came_from);
+    for(auto &x : path)
+    {
+        std::cout<<x;
+    }
+    std::cout<<std::endl;
 }
