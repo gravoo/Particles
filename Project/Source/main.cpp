@@ -6,40 +6,26 @@
 #include <cassert>
 #include <ResourceManager.hpp>
 
-const GLuint SCREEN_WIDTH = 800;
-const GLuint SCREEN_HEIGHT = 600;
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 void mouse_buttonCallback(GLFWwindow* window, int key, int action, int mods);
+GLFWwindow* glfwInitialFunctions();
+void glInitialFunctions();
 
+const GLuint SCREEN_WIDTH = 800;
+const GLuint SCREEN_HEIGHT = 600;
 Game game{SCREEN_WIDTH, SCREEN_HEIGHT};
 int main()
 {
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "game", nullptr, nullptr);
+    GLFWwindow* window = glfwInitialFunctions();
     glfwMakeContextCurrent(window);
-    if (window == nullptr)
-    {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        assert(false);
-    }
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
         assert(false);
     }
-
+    glInitialFunctions();
     glfwSetKeyCallback(window, key_callback);
     glfwSetMouseButtonCallback(window, mouse_buttonCallback);
-    glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_DEPTH_TEST);
 
     game.Init();
 
@@ -54,8 +40,35 @@ int main()
         game.Render();
         glfwSwapBuffers(window);
     }
+
     ResourceManager::Clear();
     glfwTerminate();
+}
+
+
+GLFWwindow* glfwInitialFunctions()
+{
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "game", nullptr, nullptr);
+    if (window == nullptr)
+    {
+        std::cout << "Failed to create GLFW window" << std::endl;
+        assert(false);
+    }
+    return window;
+}
+
+void glInitialFunctions()
+{
+    glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_DEPTH_TEST);
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)

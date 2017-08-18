@@ -3,32 +3,11 @@
 #include <iostream>
 namespace
 {
-const glm::vec2 PLAYER_SIZE(100, 20);
-const GLfloat PLAYER_VELOCITY(500.0f);
-// Initial velocity of the Ball
-const glm::vec2 INITIAL_BALL_VELOCITY(100.0f, -350.0f);
-// Radius of the ball object
-const GLfloat BALL_RADIUS = 12.5f;
-
-GLboolean CheckCollision(GameObject &one, GameObject &two) // AABB - AABB collision
-{
-    // Collision x-axis?
-    bool collisionX = one.Position.x + one.Size.x >= two.Position.x &&
-        two.Position.x + two.Size.x >= one.Position.x;
-    // Collision y-axis?
-    bool collisionY = one.Position.y + one.Size.y >= two.Position.y &&
-        two.Position.y + two.Size.y >= one.Position.y;
-    // Collision only if on both axes
-    return collisionX && collisionY;
-}
 
 GLboolean detectMouseClick(GameObject &one, glm::vec2 &two) // AABB - AABB collision
 {
     bool collisionX = one.Position.x + one.Size.x >= two.x && two.x >= one.Position.x;
     bool collisionY = one.Position.y + one.Size.y >= two.y && two.y >= one.Position.y;
-//     std::cout<<one.Position.x + one.Size.x<<" "<<two.x<<" "<<collisionX<<std::endl;
-//     std::cout<<one.Position.y + one.Size.y<<" "<<two.y<<" "<<collisionY<<std::endl;
-    // Collision only if on both axes
     return collisionX && collisionY;
 }
 
@@ -41,41 +20,27 @@ std::basic_iostream<char>::basic_ostream& operator<<(std::basic_iostream<char>::
 
 }
 Game::Game(GLuint width, GLuint height)
-: state(GameState::GAME_ACTIVE), width(width), height(height), camera(glm::vec3(0.0f, 0.0f, 3.0f)), lastMousePosX(width/2), lastMousePosY(height/2),
-cameraOffset(glm::vec2(0.0f, 0.0f))
+: state(GameState::GAME_ACTIVE), width(width), height(height), camera(glm::vec3(0.0f, 0.0f, 3.0f))
 {
 }
 
 void Game::Init()
 {
     ResourceManager::LoadShader("../Shaders/sprite.vs", "../Shaders/sprite.frag", "sprite");
-    // Configure shaders
     ResourceManager::GetShader("sprite").Use().SetInteger("sprite", 0);
     ResourceManager::GetShader("sprite").Use().SetMatrix4("view", camera.GetViewMatrix());
     ResourceManager::GetShader("sprite").SetMatrix4("projection", camera.getProjectionMatrix());
-    // Load textures
-    ResourceManager::LoadTexture("../Textures/background.jpg", GL_FALSE, "background");
-    ResourceManager::LoadTexture("../Textures/face.png", GL_TRUE, "face");
     ResourceManager::LoadTexture("../Textures/block.png", GL_FALSE, "block");
     ResourceManager::LoadTexture("../Textures/block_solid.png", GL_FALSE, "block_solid");
-    ResourceManager::LoadTexture("../Textures/paddle.png", true, "paddle");
     ResourceManager::LoadTexture("../Textures/hat_man1.png", true, "hat_man1");
     ResourceManager::LoadTexture("../Textures/hat_man2.png", true, "hat_man2");
-    // Load levels
     GameLevel one;
     one.Load("../levels/one.lvl", width, height);
     Levels.push_back(one);
     Level = 0;
-    // Set render-specific controls
     renderer = std::make_unique<SpriteRenderer>(ResourceManager::GetShader("sprite"));
-    glm::vec2 playerPos = glm::vec2(width / 2 - PLAYER_SIZE.x / 2, height - PLAYER_SIZE.y);
-    player = std::make_unique<GameObject>(playerPos, PLAYER_SIZE, ResourceManager::GetTexture("paddle"));
-    glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2 - BALL_RADIUS, -BALL_RADIUS * 2);
-    ball = std::make_unique<BallObject>(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, ResourceManager::GetTexture("face"));
-    glm::vec2 unitPos =  glm::vec2(0, 0);
-    glm::vec2 unitSize =  glm::vec2(60, 40);
-    buildUnit = std::make_unique<GameBuildUnit>(unitPos, unitSize, INITIAL_BALL_VELOCITY, ResourceManager::GetTexture("hat_man1"),
-                                                GameGrid::Location{0, 0});
+    buildUnit = std::make_unique<GameBuildUnit>(
+        glm::vec2(0, 0), glm::vec2(60, 40), glm::vec2(100.0f, -350.0f), ResourceManager::GetTexture("hat_man1"), GameGrid::Location{0, 0});
 }
 
 void Game::Render()
@@ -120,7 +85,7 @@ void Game::ProcessInput()
 
 void Game::UpdateState()
 {
-    buildUnit->move(mousePosition, deltaTime);
+    buildUnit->move();
 }
 
 void Game::SyncroinzeTimers()

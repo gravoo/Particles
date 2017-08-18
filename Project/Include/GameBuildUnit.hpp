@@ -7,7 +7,7 @@ class GameBuildUnit : public GameObject
 {
 public:
     GameBuildUnit(glm::vec2 pos, glm::vec2 size, glm::vec2 velocity, Texture sprite,  GameGrid::Location id);
-    void move(glm::vec2 pos, GLfloat dt);
+    void move();
     bool changeSelected();
     void setDestinationToTravel(GameObject &gameObject, const GameLevel& object);
     bool selected{false};

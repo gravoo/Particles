@@ -23,7 +23,7 @@ GameBuildUnit::GameBuildUnit(glm::vec2 pos, glm::vec2 size, glm::vec2 velocity, 
 
 }
 
-void GameBuildUnit::move(glm::vec2 pos, GLfloat dt)
+void GameBuildUnit::move()
 {
     if(!path.empty())
     {
@@ -42,7 +42,7 @@ bool GameBuildUnit::changeSelected()
     return selected=(selected)?false:true;
 }
 
-void GameBuildUnit::setDestinationToTravel(GameObject &gameObject,const GameLevel& level)
+void GameBuildUnit::setDestinationToTravel(GameObject &gameObject, const GameLevel& level)
 {
     destination = gameObject;
     std::unordered_map<GameGrid::Location, GameGrid::Location> came_from;
