@@ -60,8 +60,15 @@ void Game::ProcessInput()
 {
     if (state == GameState::GAME_ACTIVE)
     {
-        if(keys[GLFW_MOUSE_BUTTON_LEFT])
+        if(mouseKeys[GLFW_MOUSE_BUTTON_LEFT])
         {
+            std::cout<<"Left Mouse button is pressed"<<std::endl;
+            processMousePress();
+        }
+        if(mouseKeys[GLFW_MOUSE_BUTTON_RIGHT])
+        {
+            std::cout<<"Right Mouse button is pressed"<<std::endl;
+            buildUnit->setSelectedFlag(false);
         }
         if (keys[GLFW_KEY_W] )
         {
@@ -85,7 +92,7 @@ void Game::ProcessInput()
 
 void Game::UpdateState()
 {
-    buildUnit->move();
+    buildUnit->update(deltaTime);
 }
 
 void Game::SyncroinzeTimers()
@@ -97,34 +104,43 @@ void Game::SyncroinzeTimers()
 
 void Game::DetectMouseClick()
 {
-    for(auto &x : Levels.back().Bricks)
+    for(auto &tile : Levels.back().Bricks)
     {
-        if (detectMouseClick(x, mousePosition))
+        if (detectMouseClick(tile, mousePosition))
         {
-            if(!x.IsSolid)
+            if(!tile.IsSolid)
             {
-                std::cout<<"Mouse clicked on brick "<<x.id<<std::endl;
+                std::cout<<"Mouse clicked on brick "<<tile.id<<std::endl;
                 if(buildUnit->selected)
                 {
-                    buildUnit->setDestinationToTravel(x, Levels.back());
+                    buildUnit->setDestinationToTravel(tile, Levels.back());
                 }
             }
         }
     }
-    if (detectMouseClick(*buildUnit, mousePosition))
+    if (detectMouseClick(*buildUnit, mousePosition) && !buildUnit->selected)
     {
-        buildUnit->changeSelected();
-        std::cout<<"Mouse clicked on buildUnit "<<std::endl;
+        buildUnit->setSelectedFlag(true);
+        std::cout<<"buildUnit is selected"<<std::endl;
     }
 }
+
 void Game::setMousePosition(GLfloat xpos, GLfloat ypos)
 {
-    glm::vec4 viewport = glm::vec4(0, 0, width, height);
-    glm::vec3 wincoord = glm::vec3(xpos, height - ypos - 1.0f, 1.0f);
-    glm::vec3 objcoord = glm::unProject(wincoord, camera.GetViewMatrix(), camera.getProjectionMatrix(), viewport);
-    std::cout<<"World mouse unProject "<<objcoord.x<<" "<<objcoord.y<<std::endl;
-    mousePosition=glm::vec2(objcoord.x, objcoord.y);
-    DetectMouseClick();
+    if(xpos != lastXpos && ypos != lastYpos)
+    {
+        lastXpos = xpos;
+        lastYpos = ypos;
+        glm::vec4 viewport = glm::vec4(0, 0, width, height);
+        glm::vec3 wincoord = glm::vec3(xpos, height - ypos - 1.0f, 1.0f);
+        glm::vec3 objcoord = glm::unProject(wincoord, camera.GetViewMatrix(), camera.getProjectionMatrix(), viewport);
+        std::cout<<"World mouse unProject "<<objcoord.x<<" "<<objcoord.y<<std::endl;
+        mousePosition=glm::vec2(objcoord.x, objcoord.y);
+    }
 }
 
+void Game::processMousePress()
+{
+    DetectMouseClick();
+}
 

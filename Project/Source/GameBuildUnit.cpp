@@ -23,23 +23,25 @@ GameBuildUnit::GameBuildUnit(glm::vec2 pos, glm::vec2 size, glm::vec2 velocity, 
 
 }
 
-void GameBuildUnit::move()
+void GameBuildUnit::update(GLfloat elapsedTime)
 {
     if(!path.empty())
     {
-        if(selected)
+        updateTime -= elapsedTime;
+        if(updateTime <= 0)
         {
             id = path.back();
             this->Position = getPosition(path.back()) * destination.Size;
+            path.pop_back();
+            updateTime = 0.5;
         }
-        path.pop_back();
     }
 }
 
-bool GameBuildUnit::changeSelected()
+bool GameBuildUnit::setSelectedFlag(bool selected)
 {
-    destination = GameObject();
-    return selected=(selected)?false:true;
+    this->selected = selected;
+    return selected;
 }
 
 void GameBuildUnit::setDestinationToTravel(GameObject &gameObject, const GameLevel& level)
@@ -49,9 +51,4 @@ void GameBuildUnit::setDestinationToTravel(GameObject &gameObject, const GameLev
     std::unordered_map<GameGrid::Location, double> cost_so_far;
     a_star_search(level.grid, id, destination.id, came_from, cost_so_far);
     path = reconstruct_path(id, destination.id, came_from);
-    for(auto &x : path)
-    {
-        std::cout<<x;
-    }
-    std::cout<<std::endl;
 }

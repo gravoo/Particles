@@ -29,9 +29,11 @@ public:
     void DoCollisions();
     void setMousePosition(GLfloat xpos, GLfloat ypos);
     GLboolean keys[1024];
+    GLboolean mouseKeys[8];
     std::vector<GameLevel> Levels;
     GLuint                 Level;
 private:
+    void processMousePress();
     void DetectMouseClick();
     GLuint width, height;
     std::unique_ptr<SpriteRenderer> renderer;
@@ -40,4 +42,5 @@ private:
     GLfloat deltaTime{0.0f};
     GLfloat lastFrame{0.0f};
     glm::vec2 mousePosition;
+    GLfloat lastXpos{0.0f}, lastYpos{0.0f};
 };

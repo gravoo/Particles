@@ -73,29 +73,36 @@ void glInitialFunctions()
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
-    // When a user presses the escape key, we set the WindowShouldClose property to true, closing the application
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GL_TRUE);
-    if (key >= 0 && key < 1024)
     {
-        if (action == GLFW_PRESS)
-            game.keys[key] = GL_TRUE;
-        else if (action == GLFW_RELEASE)
-            game.keys[key] = GL_FALSE;
+        glfwSetWindowShouldClose(window, GL_TRUE);
     }
-}
-void mouse_buttonCallback(GLFWwindow* window, int key, int action, int mods)
-{
-    if (key == GLFW_MOUSE_BUTTON_LEFT)
+    if (key >= 0 && key < 1024)
     {
         if (action == GLFW_PRESS)
         {
             game.keys[key] = GL_TRUE;
+        }
+        else if (action == GLFW_RELEASE)
+        {
+            game.keys[key] = GL_FALSE;
+        }
+    }
+}
+void mouse_buttonCallback(GLFWwindow* window, int key, int action, int mods)
+{
+    if(key >= 0 && key < 9)
+    {
+        if (action == GLFW_PRESS)
+        {
+            game.mouseKeys[key] = GL_TRUE;
             double x, y;
             glfwGetCursorPos(window, &x, &y);
             game.setMousePosition(x, y);
         }
         else if (action == GLFW_RELEASE)
-            game.keys[key] = GL_FALSE;
+        {
+            game.mouseKeys[key] = GL_FALSE;
+        }
     }
 }
