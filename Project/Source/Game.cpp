@@ -111,7 +111,7 @@ void Game::DetectMouseClick()
                 {
                     if(buildUnit->selected)
                     {
-                        buildUnit->setDestinationToTravel(tile, Levels.back().grid);
+                        buildUnit->setDestinationToTravel(tile);
                     }
                 }
                 std::cout<<"Mouse clicked on brick "<<tile.id<<std::endl;
@@ -123,6 +123,10 @@ void Game::DetectMouseClick()
     {
         if (detectMouseClick(*buildUnit, mousePosition) && !buildUnit->selected)
         {
+            for(auto & buildUnit : buildUnits)
+            {
+                buildUnit->setSelectedFlag(false);
+            }
             buildUnit->setSelectedFlag(true);
             std::cout<<"buildUnit is selected"<<std::endl;
         }
@@ -180,9 +184,9 @@ void Game::prepare_game_level()
 void Game::prepare_build_units()
 {
     buildUnits.push_back(std::make_unique<GameBuildUnit>(
-        glm::vec2(0, 0), glm::vec2(60, 40), glm::vec2(1.75f, 2.5f), hatMan, GameGrid::Location{0, 0}));
+        glm::vec2(0, 0), glm::vec2(60, 40), glm::vec2(1.75f, 2.5f), hatMan, GameGrid::Location{0, 0}, Levels.back().grid));
     buildUnits.push_back(std::make_unique<GameBuildUnit>(
-        glm::vec2(0, 70), glm::vec2(60, 40), glm::vec2(1.75f, 2.5f), hatMan, GameGrid::Location{0, 1}));
+        glm::vec2(0, 70), glm::vec2(60, 40), glm::vec2(1.75f, 2.5f), hatMan, GameGrid::Location{0, 1}, Levels.back().grid));
     buildUnits.push_back(std::make_unique<GameBuildUnit>(
-        glm::vec2(0, 140), glm::vec2(60, 40), glm::vec2(1.75f, 2.5f), hatMan, GameGrid::Location{0, 2}));
+        glm::vec2(0, 140), glm::vec2(60, 40), glm::vec2(1.75f, 2.5f), hatMan, GameGrid::Location{0, 2}, Levels.back().grid));
 }

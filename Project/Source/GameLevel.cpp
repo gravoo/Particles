@@ -4,9 +4,7 @@
 #include <iostream>
 void GameLevel::Load(const GLchar *file, GLuint levelWidth, GLuint levelHeight)
 {
-    // Clear old data
     this->Bricks.clear();
-    // Load from file
     GLuint tileCode;
     GameLevel level;
     std::string line;
@@ -14,11 +12,11 @@ void GameLevel::Load(const GLchar *file, GLuint levelWidth, GLuint levelHeight)
     std::vector<std::vector<GLuint>> tileData;
     if (fstream)
     {
-        while (std::getline(fstream, line)) // Read each line from level file
+        while (std::getline(fstream, line))
         {
             std::istringstream sstream(line);
             std::vector<GLuint> row;
-            while (sstream >> tileCode) // Read each word seperated by spaces
+            while (sstream >> tileCode)
                 row.push_back(tileCode);
             tileData.push_back(row);
         }
@@ -41,7 +39,6 @@ void GameLevel::init(std::vector<std::vector<GLuint>> tileData, GLuint lvlWidth,
     {
         for (GLuint x = 0; x < width; ++x)
         {
-            // Check block type from level data (2D level array)
             if (tileData[y][x] == 1) // Solid
             {
                 glm::vec2 pos(unit_width * x, unit_height * y);

@@ -17,15 +17,17 @@ glm::vec2 getPosition(std::tuple<int,int> loc)
 }
 
 }
-GameBuildUnit::GameBuildUnit(glm::vec2 pos, glm::vec2 size, glm::vec2 velocity, std::vector<Texture> sprites,  GameGrid::Location id)
-    : GameObject(pos, size, sprites[0], glm::vec3(1.0f), velocity, id), destination(GameObject()), sprites(sprites)
+GameBuildUnit::GameBuildUnit(glm::vec2 pos, glm::vec2 size, glm::vec2 velocity, std::vector<Texture> sprites,  GameGrid::Location id,
+                             std::shared_ptr<GridWithWeights> grid)
+    : GameObject(pos, size, sprites[0], glm::vec3(1.0f), velocity, id), destination(GameObject()), sprites(sprites), world_grid(grid)
 {
-
+    world_grid->walls.insert(id);
+    destination.id = id;
 }
 
 void GameBuildUnit::update(GLfloat elapsedTime)
 {
-    if(!path.empty())
+    if(destination.id != id)
     {
         updateTime -= elapsedTime;
         Position += getDirectionOfMovement();
@@ -49,10 +51,9 @@ bool GameBuildUnit::setSelectedFlag(bool selected)
     return selected;
 }
 
-void GameBuildUnit::setDestinationToTravel(GameObject &gameObject, std::shared_ptr<GridWithWeights> grid)
+void GameBuildUnit::setDestinationToTravel(GameObject &gameObject)
 {
     destination = gameObject;
-    world_grid = grid;
     find_path();
 }
 
@@ -70,11 +71,24 @@ void GameBuildUnit::changeSprite()
 
 void GameBuildUnit::find_path()
 {
-    std::unordered_map<GameGrid::Location, GameGrid::Location> came_from;
-    std::unordered_map<GameGrid::Location, double> cost_so_far;
-    a_star_search(*world_grid, id, destination.id, came_from, cost_so_far);
-    path = reconstruct_path(id, destination.id, came_from);
-    path.pop_back();
-    std::cout<<path.back()<<std::endl;
-    world_grid->walls.insert(id);
+    if(destination.id != id)
+    {
+        std::unordered_map<GameGrid::Location, GameGrid::Location> came_from;
+        std::unordered_map<GameGrid::Location, double> cost_so_far;
+        checkIfGoalIsFree();
+        a_star_search(*world_grid, id, destination.id, came_from, cost_so_far);
+        path = reconstruct_path(id, destination.id, came_from);
+        path.pop_back();
+        std::cout<<path.back()<<std::endl;
+        world_grid->walls.insert(id);
+    }
+}
+
+void GameBuildUnit::checkIfGoalIsFree()
+{
+    if(!world_grid->passable(destination.id))
+    {
+        auto tmp_goal = world_grid->neighbors(destination.id);
+        destination.id = tmp_goal.front();
+    }
 }
