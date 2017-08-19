@@ -6,7 +6,8 @@
 #include <GameObject.hpp>
 #include <ResourceManager.hpp>
 #include <GameGrid.hpp>
-//
+#include <memory>
+
 class GameLevel
 {
 public:
@@ -16,7 +17,7 @@ public:
     void Draw(SpriteRenderer &renderer);
     GLboolean IsCompleted();
     void checkWithTileWasClicked();
-    GridWithWeights grid;
+    std::shared_ptr<GridWithWeights> grid;
 private:
     void init(std::vector<std::vector<GLuint>> tileData, GLuint levelWidth, GLuint levelHeight);
 };

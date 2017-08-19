@@ -33,7 +33,7 @@ void GameLevel::init(std::vector<std::vector<GLuint>> tileData, GLuint lvlWidth,
     // Calculate dimensions
     GLuint height = tileData.size();
     GLuint width = tileData[0].size();
-    grid = GridWithWeights(width,height);
+    grid = std::make_shared<GridWithWeights>(width, height);
     GLfloat unit_width = lvlWidth / static_cast<GLfloat>(width);
     GLfloat unit_height = lvlHeight / height;
     // Initialize level tiles based on tileData
@@ -51,7 +51,7 @@ void GameLevel::init(std::vector<std::vector<GLuint>> tileData, GLuint lvlWidth,
                     glm::vec3(0.8f, 0.8f, 0.7f), glm::vec2(0.0f, 0.0f), GameGrid::Location { x, y } );
                 obj.IsSolid = GL_TRUE;
                 this->Bricks.push_back(obj);
-                grid.walls.insert(GameGrid::Location { x, y });
+                grid->walls.insert(GameGrid::Location { x, y });
             }
             else if (tileData[y][x] > 1)
             {

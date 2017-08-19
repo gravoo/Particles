@@ -32,10 +32,13 @@ void GameBuildUnit::update(GLfloat elapsedTime)
         if(updateTime <= 0)
         {
             changeSprite();
+            world_grid->walls.erase(id);
             id = path.back();
+            world_grid->walls.insert(id);
             Position = getPosition(path.back()) * destination.Size;
             path.pop_back();
             updateTime = 0.5;
+            find_path();
         }
     }
 }
@@ -46,13 +49,11 @@ bool GameBuildUnit::setSelectedFlag(bool selected)
     return selected;
 }
 
-void GameBuildUnit::setDestinationToTravel(GameObject &gameObject, const GameLevel& level)
+void GameBuildUnit::setDestinationToTravel(GameObject &gameObject, std::shared_ptr<GridWithWeights> grid)
 {
     destination = gameObject;
-    std::unordered_map<GameGrid::Location, GameGrid::Location> came_from;
-    std::unordered_map<GameGrid::Location, double> cost_so_far;
-    a_star_search(level.grid, id, destination.id, came_from, cost_so_far);
-    path = reconstruct_path(id, destination.id, came_from);
+    world_grid = grid;
+    find_path();
 }
 
 glm::vec2 GameBuildUnit::getDirectionOfMovement()
@@ -65,4 +66,15 @@ void GameBuildUnit::changeSprite()
 {
     Sprite = sprites[current_sprite % sprites.size()];
     current_sprite++;
+}
+
+void GameBuildUnit::find_path()
+{
+    std::unordered_map<GameGrid::Location, GameGrid::Location> came_from;
+    std::unordered_map<GameGrid::Location, double> cost_so_far;
+    a_star_search(*world_grid, id, destination.id, came_from, cost_so_far);
+    path = reconstruct_path(id, destination.id, came_from);
+    path.pop_back();
+    std::cout<<path.back()<<std::endl;
+    world_grid->walls.insert(id);
 }

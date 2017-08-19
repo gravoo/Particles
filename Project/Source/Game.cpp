@@ -105,13 +105,13 @@ void Game::DetectMouseClick()
     {
         if (detectMouseClick(tile, mousePosition))
         {
-            if(!tile.IsSolid)
+            if(Levels.back().grid->passable(tile.id))
             {
                 for(auto & buildUnit : buildUnits)
                 {
                     if(buildUnit->selected)
                     {
-                        buildUnit->setDestinationToTravel(tile, Levels.back());
+                        buildUnit->setDestinationToTravel(tile, Levels.back().grid);
                     }
                 }
                 std::cout<<"Mouse clicked on brick "<<tile.id<<std::endl;
