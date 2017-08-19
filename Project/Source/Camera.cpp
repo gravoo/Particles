@@ -1,24 +1,15 @@
 #include <Camera.hpp>
 #include <iostream>
-namespace
-{
-const float SPEED      =  100.f;
-const float ZOOM       =  45.0f;
-}
 
-Camera::Camera( glm::vec3 position, glm::vec3 up, float yaw, float pitch , GLuint width, GLuint height)
-        : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), width(width), height(height)
+Camera::Camera( glm::vec3 position, GLuint width, GLuint height,  GLfloat rotate)
+        : Position(position), width(width), height(height), rotate(rotate)
 {
-    Position = position;
-    WorldUp = up;
-    Yaw = yaw;
-    Pitch = pitch;
     updateCameraVectors();
 }
 
 glm::mat4 Camera::GetViewMatrix()
 {
-    return glm::lookAt(Position, Position + Front, Up);
+    return glm::rotate(glm::lookAt(Position, Position + Front, Up), rotate, glm::vec3(0.0f, 0.0f, 1.0f));
 }
 glm::mat4 Camera::getProjectionMatrix()
 {

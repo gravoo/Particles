@@ -20,38 +20,27 @@ std::basic_iostream<char>::basic_ostream& operator<<(std::basic_iostream<char>::
 
 }
 Game::Game(GLuint width, GLuint height)
-: state(GameState::GAME_ACTIVE), width(width), height(height), camera(glm::vec3(0.0f, 0.0f, 3.0f))
+: state(GameState::GAME_ACTIVE), width(width), height(height), camera(glm::vec3(0.0f, 0.0f, 3.0f), width, height, 0.0f)
 {
 }
 
 void Game::Init()
 {
-    ResourceManager::LoadShader("../Shaders/sprite.vs", "../Shaders/sprite.frag", "sprite");
-    ResourceManager::GetShader("sprite").Use().SetInteger("sprite", 0);
-    ResourceManager::GetShader("sprite").Use().SetMatrix4("view", camera.GetViewMatrix());
-    ResourceManager::GetShader("sprite").SetMatrix4("projection", camera.getProjectionMatrix());
-    ResourceManager::LoadTexture("../Textures/block.png", GL_FALSE, "block");
-    ResourceManager::LoadTexture("../Textures/block_solid.png", GL_FALSE, "block_solid");
-    ResourceManager::LoadTexture("../Textures/hat_man1.png", true, "hat_man1");
-    ResourceManager::LoadTexture("../Textures/hat_man2.png", true, "hat_man2");
-    GameLevel one;
-    one.Load("../levels/one.lvl", width, height);
-    Levels.push_back(one);
-    Level = 0;
+    prepare_shaders();
+    load_textures();
+    prepare_game_level();
     renderer = std::make_unique<SpriteRenderer>(ResourceManager::GetShader("sprite"));
     buildUnit = std::make_unique<GameBuildUnit>(
-        glm::vec2(0, 0), glm::vec2(60, 40), glm::vec2(100.0f, -350.0f), ResourceManager::GetTexture("hat_man1"), GameGrid::Location{0, 0});
+        glm::vec2(0, 0), glm::vec2(60, 40), glm::vec2(1.75f, 2.5f), hatMan, GameGrid::Location{0, 0});
 }
 
 void Game::Render()
 {
     if(state == GameState::GAME_ACTIVE)
     {
-        glm::mat4 view = camera.GetViewMatrix();
-        view = glm::rotate(view, 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-        ResourceManager::GetShader("sprite").Use().SetMatrix4("view", view);
+        ResourceManager::GetShader("sprite").Use().SetMatrix4("view", camera.GetViewMatrix());
         buildUnit->Draw(*renderer);
-        Levels[Level].Draw(*renderer);
+        Levels.back().Draw(*renderer);
     }
 
 }
@@ -144,3 +133,31 @@ void Game::processMousePress()
     DetectMouseClick();
 }
 
+void Game::load_textures()
+{
+    ResourceManager::LoadTexture("../Textures/block.png", GL_FALSE, "block");
+    ResourceManager::LoadTexture("../Textures/block_solid.png", GL_FALSE, "block_solid");
+    ResourceManager::LoadTexture("../Textures/Hat_man/Walk/Hat_man1.png", GL_TRUE, "hat_man1");
+    ResourceManager::LoadTexture("../Textures/Hat_man/Walk/Hat_man2.png", GL_TRUE, "hat_man2");
+    ResourceManager::LoadTexture("../Textures/Hat_man/Walk/Hat_man3.png", GL_TRUE, "hat_man3");
+    ResourceManager::LoadTexture("../Textures/Hat_man/Walk/Hat_man4.png", GL_TRUE, "hat_man4");
+    hatMan.push_back(ResourceManager::GetTexture("hat_man1"));
+    hatMan.push_back(ResourceManager::GetTexture("hat_man2"));
+    hatMan.push_back(ResourceManager::GetTexture("hat_man3"));
+    hatMan.push_back(ResourceManager::GetTexture("hat_man4"));
+}
+
+void Game::prepare_shaders()
+{
+    ResourceManager::LoadShader("../Shaders/sprite.vs", "../Shaders/sprite.frag", "sprite");
+    ResourceManager::GetShader("sprite").Use().SetInteger("sprite", 0);
+    ResourceManager::GetShader("sprite").Use().SetMatrix4("view", camera.GetViewMatrix());
+    ResourceManager::GetShader("sprite").SetMatrix4("projection", camera.getProjectionMatrix());
+}
+
+void Game::prepare_game_level()
+{
+    GameLevel one;
+    one.Load("../levels/one.lvl", width, height);
+    Levels.push_back(one);
+}

@@ -5,7 +5,6 @@
 #include <memory>
 #include <GameLevel.hpp>
 #include <GameObject.hpp>
-#include <BallObject.hpp>
 #include <Camera.hpp>
 #include <GameBuildUnit.hpp>
 #include <vector>
@@ -33,6 +32,9 @@ public:
     std::vector<GameLevel> Levels;
     GLuint                 Level;
 private:
+    void load_textures();
+    void prepare_shaders();
+    void prepare_game_level();
     void processMousePress();
     void DetectMouseClick();
     GLuint width, height;
@@ -43,4 +45,5 @@ private:
     GLfloat lastFrame{0.0f};
     glm::vec2 mousePosition;
     GLfloat lastXpos{0.0f}, lastYpos{0.0f};
+    std::vector<Texture> hatMan;
 };
