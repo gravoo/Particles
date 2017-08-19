@@ -114,11 +114,15 @@ void a_star_search
 }
 
 template<typename Location>
-std::vector<Location> reconstruct_path( Location start, Location goal, std::unordered_map<Location, Location>& came_from )
+std::vector<Location> reconstruct_path( Location start, Location goal, std::unordered_map<Location, Location>& came_from , std::size_t max_grid_size )
 {
   std::vector<Location> path;
   Location current = goal;
   path.push_back(current);
+  if(came_from.size()>=max_grid_size - 1)
+  {
+      return path;
+  }
   while (current != start) {
     current = came_from[current];
     path.push_back(current);

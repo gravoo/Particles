@@ -114,7 +114,6 @@ void Game::DetectMouseClick()
                         buildUnit->setDestinationToTravel(tile);
                     }
                 }
-                std::cout<<"Mouse clicked on brick "<<tile.id<<std::endl;
 
             }
         }
@@ -128,7 +127,6 @@ void Game::DetectMouseClick()
                 buildUnit->setSelectedFlag(false);
             }
             buildUnit->setSelectedFlag(true);
-            std::cout<<"buildUnit is selected"<<std::endl;
         }
     }
 }
@@ -142,7 +140,6 @@ void Game::setMousePosition(GLfloat xpos, GLfloat ypos)
         glm::vec4 viewport = glm::vec4(0, 0, width, height);
         glm::vec3 wincoord = glm::vec3(xpos, height - ypos - 1.0f, 1.0f);
         glm::vec3 objcoord = glm::unProject(wincoord, camera.GetViewMatrix(), camera.getProjectionMatrix(), viewport);
-        std::cout<<"World mouse unProject "<<objcoord.x<<" "<<objcoord.y<<std::endl;
         mousePosition=glm::vec2(objcoord.x, objcoord.y);
     }
 }

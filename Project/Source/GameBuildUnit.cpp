@@ -27,7 +27,7 @@ GameBuildUnit::GameBuildUnit(glm::vec2 pos, glm::vec2 size, glm::vec2 velocity, 
 
 void GameBuildUnit::update(GLfloat elapsedTime)
 {
-    if(destination.id != id)
+    if(destination.id != id and !path.empty())
     {
         updateTime -= elapsedTime;
         Position += getDirectionOfMovement();
@@ -77,9 +77,8 @@ void GameBuildUnit::find_path()
         std::unordered_map<GameGrid::Location, double> cost_so_far;
         checkIfGoalIsFree();
         a_star_search(*world_grid, id, destination.id, came_from, cost_so_far);
-        path = reconstruct_path(id, destination.id, came_from);
+        path = reconstruct_path(id, destination.id, came_from, (world_grid->width*world_grid->height - world_grid->walls.size()));
         path.pop_back();
-        std::cout<<path.back()<<std::endl;
         world_grid->walls.insert(id);
     }
 }
