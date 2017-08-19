@@ -29,9 +29,8 @@ void Game::Init()
     prepare_shaders();
     load_textures();
     prepare_game_level();
+    prepare_build_units();
     renderer = std::make_unique<SpriteRenderer>(ResourceManager::GetShader("sprite"));
-    buildUnit = std::make_unique<GameBuildUnit>(
-        glm::vec2(0, 0), glm::vec2(60, 40), glm::vec2(1.75f, 2.5f), hatMan, GameGrid::Location{0, 0});
 }
 
 void Game::Render()
@@ -39,7 +38,10 @@ void Game::Render()
     if(state == GameState::GAME_ACTIVE)
     {
         ResourceManager::GetShader("sprite").Use().SetMatrix4("view", camera.GetViewMatrix());
-        buildUnit->Draw(*renderer);
+        for(auto & buildUnit : buildUnits)
+        {
+            buildUnit->Draw(*renderer);
+        }
         Levels.back().Draw(*renderer);
     }
 
@@ -57,7 +59,10 @@ void Game::ProcessInput()
         if(mouseKeys[GLFW_MOUSE_BUTTON_RIGHT])
         {
             std::cout<<"Right Mouse button is pressed"<<std::endl;
-            buildUnit->setSelectedFlag(false);
+            for(auto & buildUnit : buildUnits)
+            {
+                buildUnit->setSelectedFlag(false);
+            }
         }
         if (keys[GLFW_KEY_W] )
         {
@@ -81,7 +86,10 @@ void Game::ProcessInput()
 
 void Game::UpdateState()
 {
-    buildUnit->update(deltaTime);
+    for(auto & buildUnit : buildUnits)
+    {
+        buildUnit->update(deltaTime);
+    }
 }
 
 void Game::SyncroinzeTimers()
@@ -99,18 +107,25 @@ void Game::DetectMouseClick()
         {
             if(!tile.IsSolid)
             {
-                std::cout<<"Mouse clicked on brick "<<tile.id<<std::endl;
-                if(buildUnit->selected)
+                for(auto & buildUnit : buildUnits)
                 {
-                    buildUnit->setDestinationToTravel(tile, Levels.back());
+                    if(buildUnit->selected)
+                    {
+                        buildUnit->setDestinationToTravel(tile, Levels.back());
+                    }
                 }
+                std::cout<<"Mouse clicked on brick "<<tile.id<<std::endl;
+
             }
         }
     }
-    if (detectMouseClick(*buildUnit, mousePosition) && !buildUnit->selected)
+    for(auto & buildUnit : buildUnits)
     {
-        buildUnit->setSelectedFlag(true);
-        std::cout<<"buildUnit is selected"<<std::endl;
+        if (detectMouseClick(*buildUnit, mousePosition) && !buildUnit->selected)
+        {
+            buildUnit->setSelectedFlag(true);
+            std::cout<<"buildUnit is selected"<<std::endl;
+        }
     }
 }
 
@@ -160,4 +175,14 @@ void Game::prepare_game_level()
     GameLevel one;
     one.Load("../levels/one.lvl", width, height);
     Levels.push_back(one);
+}
+
+void Game::prepare_build_units()
+{
+    buildUnits.push_back(std::make_unique<GameBuildUnit>(
+        glm::vec2(0, 0), glm::vec2(60, 40), glm::vec2(1.75f, 2.5f), hatMan, GameGrid::Location{0, 0}));
+    buildUnits.push_back(std::make_unique<GameBuildUnit>(
+        glm::vec2(0, 70), glm::vec2(60, 40), glm::vec2(1.75f, 2.5f), hatMan, GameGrid::Location{0, 1}));
+    buildUnits.push_back(std::make_unique<GameBuildUnit>(
+        glm::vec2(0, 140), glm::vec2(60, 40), glm::vec2(1.75f, 2.5f), hatMan, GameGrid::Location{0, 2}));
 }

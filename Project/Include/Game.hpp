@@ -37,9 +37,10 @@ private:
     void prepare_game_level();
     void processMousePress();
     void DetectMouseClick();
+    void prepare_build_units();
     GLuint width, height;
     std::unique_ptr<SpriteRenderer> renderer;
-    std::unique_ptr<GameBuildUnit> buildUnit;
+    std::vector<std::unique_ptr<GameBuildUnit>> buildUnits;
     Camera camera;
     GLfloat deltaTime{0.0f};
     GLfloat lastFrame{0.0f};
