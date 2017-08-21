@@ -1,5 +1,6 @@
 #include <Camera.hpp>
 #include <iostream>
+#include<cassert>
 
 Camera::Camera( glm::vec3 position, GLuint width, GLuint height,  GLfloat rotate)
         : Position(position), width(width), height(height), rotate(rotate)
@@ -34,7 +35,9 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
     if (direction == Camera_Movement::RIGHT)
         Position += Right * velocity;
     if (direction == Camera_Movement::UP)
+    {
         Position -= Up * velocity;
+    }
     if (direction == Camera_Movement::DOWN)
         Position += Up * velocity;
 }

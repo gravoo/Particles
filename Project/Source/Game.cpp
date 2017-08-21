@@ -20,7 +20,7 @@ std::basic_iostream<char>::basic_ostream& operator<<(std::basic_iostream<char>::
 
 }
 Game::Game(GLuint width, GLuint height)
-: state(GameState::GAME_ACTIVE), width(width), height(height), camera(glm::vec3(0.0f, 0.0f, 3.0f), width, height, 0.0f)
+: state(GameState::GAME_ACTIVE), width(width), height(height), camera(std::make_shared<Camera>(glm::vec3(0.0f, 0.0f, 3.0f), width, height, 0.0f)), inputHandler(std::make_shared<MoveCameraUp>(camera), std::make_shared<MoveCameraDown>(camera), std::make_shared<MoveCameraLeft>(camera), std::make_shared<MoveCameraRight>(camera))
 {
 }
 
@@ -37,7 +37,7 @@ void Game::Render()
 {
     if(state == GameState::GAME_ACTIVE)
     {
-        ResourceManager::GetShader("sprite").Use().SetMatrix4("view", camera.GetViewMatrix());
+        ResourceManager::GetShader("sprite").Use().SetMatrix4("view", camera->GetViewMatrix());
         for(auto & buildUnit : buildUnits)
         {
             buildUnit->Draw(*renderer);
@@ -51,6 +51,7 @@ void Game::ProcessInput()
 {
     if (state == GameState::GAME_ACTIVE)
     {
+        inputHandler.handleKeyboardInput(deltaTime);
         if(mouseKeys[GLFW_MOUSE_BUTTON_LEFT])
         {
             std::cout<<"Left Mouse button is pressed"<<std::endl;
@@ -64,23 +65,6 @@ void Game::ProcessInput()
                 buildUnit->setSelectedFlag(false);
             }
         }
-        if (keys[GLFW_KEY_W] )
-        {
-            camera.ProcessKeyboard(Camera_Movement::UP, deltaTime);
-        }
-        if (keys[GLFW_KEY_S])
-        {
-            camera.ProcessKeyboard(Camera_Movement::DOWN, deltaTime);
-        }
-        if (keys[GLFW_KEY_A])
-        {
-            camera.ProcessKeyboard(Camera_Movement::LEFT, deltaTime);
-        }
-        if (keys [GLFW_KEY_D])
-        {
-            camera.ProcessKeyboard(Camera_Movement::RIGHT, deltaTime);
-        }
-
     }
 }
 
@@ -139,7 +123,7 @@ void Game::setMousePosition(GLfloat xpos, GLfloat ypos)
         lastYpos = ypos;
         glm::vec4 viewport = glm::vec4(0, 0, width, height);
         glm::vec3 wincoord = glm::vec3(xpos, height - ypos - 1.0f, 1.0f);
-        glm::vec3 objcoord = glm::unProject(wincoord, camera.GetViewMatrix(), camera.getProjectionMatrix(), viewport);
+        glm::vec3 objcoord = glm::unProject(wincoord, camera->GetViewMatrix(), camera->getProjectionMatrix(), viewport);
         mousePosition=glm::vec2(objcoord.x, objcoord.y);
     }
 }
@@ -167,8 +151,8 @@ void Game::prepare_shaders()
 {
     ResourceManager::LoadShader("../Shaders/sprite.vs", "../Shaders/sprite.frag", "sprite");
     ResourceManager::GetShader("sprite").Use().SetInteger("sprite", 0);
-    ResourceManager::GetShader("sprite").Use().SetMatrix4("view", camera.GetViewMatrix());
-    ResourceManager::GetShader("sprite").SetMatrix4("projection", camera.getProjectionMatrix());
+    ResourceManager::GetShader("sprite").Use().SetMatrix4("view", camera->GetViewMatrix());
+    ResourceManager::GetShader("sprite").SetMatrix4("projection", camera->getProjectionMatrix());
 }
 
 void Game::prepare_game_level()
@@ -187,3 +171,12 @@ void Game::prepare_build_units()
     buildUnits.push_back(std::make_unique<GameBuildUnit>(
         glm::vec2(0, 140), glm::vec2(60, 40), glm::vec2(1.75f, 2.5f), hatMan, GameGrid::Location{0, 2}, Levels.back().grid));
 }
+void Game::unsetKeyInput(int key)
+{
+    inputHandler.unsetKeyboardKey(key);
+}
+void Game::setKeyInput(int key)
+{
+    inputHandler.setKeyboardKey(key);
+}
+

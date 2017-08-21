@@ -8,7 +8,7 @@
 #include <Camera.hpp>
 #include <GameBuildUnit.hpp>
 #include <vector>
-
+#include <InputHandler.hpp>
 enum class GameState {
     GAME_ACTIVE,
     GAME_MENU,
@@ -27,7 +27,8 @@ public:
     void SyncroinzeTimers();
     void DoCollisions();
     void setMousePosition(GLfloat xpos, GLfloat ypos);
-    GLboolean keys[1024];
+    void setKeyInput(int key);
+    void unsetKeyInput(int key);
     GLboolean mouseKeys[8];
     std::vector<GameLevel> Levels;
     GLuint                 Level;
@@ -41,7 +42,8 @@ private:
     GLuint width, height;
     std::unique_ptr<SpriteRenderer> renderer;
     std::vector<std::unique_ptr<GameBuildUnit>> buildUnits;
-    Camera camera;
+    std::shared_ptr<Camera> camera;
+    InputHandler inputHandler;
     GLfloat deltaTime{0.0f};
     GLfloat lastFrame{0.0f};
     glm::vec2 mousePosition;
