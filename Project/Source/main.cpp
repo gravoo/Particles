@@ -95,14 +95,14 @@ void mouse_buttonCallback(GLFWwindow* window, int key, int action, int mods)
     {
         if (action == GLFW_PRESS)
         {
-            game.mouseKeys[key] = GL_TRUE;
             double x, y;
             glfwGetCursorPos(window, &x, &y);
-            game.setMousePosition(x, y);
+            game.setMouseInput(key, x, y);
         }
         else if (action == GLFW_RELEASE)
         {
-            game.mouseKeys[key] = GL_FALSE;
+            game.unsetMouseInput(key);
+
         }
     }
 }

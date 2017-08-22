@@ -4,5 +4,5 @@ class ICommand
 {
 public:
     virtual ~ICommand(){}
-    virtual void execute(GLfloat deltaTime) = 0;
+    virtual void execute() = 0;
 };

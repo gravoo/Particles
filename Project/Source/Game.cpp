@@ -51,7 +51,7 @@ void Game::ProcessInput()
 {
     if (state == GameState::GAME_ACTIVE)
     {
-        inputHandler.handleKeyboardInput(deltaTime);
+        inputHandler.handleKeyboardInput();
         if(mouseKeys[GLFW_MOUSE_BUTTON_LEFT])
         {
             std::cout<<"Left Mouse button is pressed"<<std::endl;
@@ -70,6 +70,7 @@ void Game::ProcessInput()
 
 void Game::UpdateState()
 {
+    camera->update(deltaTime);
     for(auto & buildUnit : buildUnits)
     {
         buildUnit->update(deltaTime);
@@ -178,5 +179,14 @@ void Game::unsetKeyInput(int key)
 void Game::setKeyInput(int key)
 {
     inputHandler.setKeyboardKey(key);
+}
+void Game::setMouseInput(int key, GLfloat xpos, GLfloat ypos)
+{
+    mouseKeys[key] = GL_TRUE;
+    setMousePosition(xpos, ypos);
+}
+void Game::unsetMouseInput(int key)
+{
+    mouseKeys[key] = GL_FALSE;
 }
 

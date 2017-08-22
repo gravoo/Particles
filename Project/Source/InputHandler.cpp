@@ -9,23 +9,23 @@ InputHandler::InputHandler(std::shared_ptr<ICommand> buttonUp,
 
 }
 
-void InputHandler::handleKeyboardInput(GLfloat deltaTime)
+void InputHandler::handleKeyboardInput()
 {
     if (keys[GLFW_KEY_W] )
     {
-        buttonW ->execute(deltaTime);
+        buttonW ->execute();
     }
     if (keys[GLFW_KEY_S] )
     {
-        buttonS ->execute(deltaTime);
+        buttonS ->execute();
     }
     if (keys[GLFW_KEY_A] )
     {
-        buttonA ->execute(deltaTime);
+        buttonA ->execute();
     }
     if (keys[GLFW_KEY_D] )
     {
-        buttonD ->execute(deltaTime);
+        buttonD ->execute();
     }
 
 }

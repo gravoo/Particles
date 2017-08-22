@@ -7,9 +7,9 @@ class MoveCameraRight: public ICommand
 public:
     MoveCameraRight(std::shared_ptr<Camera> camera) : camera(camera)
     {}
-    void execute(GLfloat deltaTime) override
+    void execute( ) override
     {
-        camera->ProcessKeyboard(Camera_Movement::RIGHT, deltaTime);
+        camera->ProcessKeyboard(Camera_Movement::RIGHT);
     };
 private:
     std::shared_ptr<Camera> camera;

@@ -12,7 +12,7 @@ public:
                  std::shared_ptr<ICommand> buttonLeft,
                  std::shared_ptr<ICommand> buttonRight);
     void handleMouseInput();
-    void handleKeyboardInput(GLfloat deltaTime);
+    void handleKeyboardInput();
     void setKeyboardKey(int key);
     void unsetKeyboardKey(int key);
 private:

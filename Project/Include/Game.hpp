@@ -29,6 +29,8 @@ public:
     void setMousePosition(GLfloat xpos, GLfloat ypos);
     void setKeyInput(int key);
     void unsetKeyInput(int key);
+    void setMouseInput(int key, GLfloat xpos, GLfloat ypos);
+    void unsetMouseInput(int key);
     GLboolean mouseKeys[8];
     std::vector<GameLevel> Levels;
     GLuint                 Level;

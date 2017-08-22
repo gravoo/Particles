@@ -15,9 +15,10 @@ class Camera
 public:
     Camera(glm::vec3 position, GLuint width, GLuint height,  GLfloat rotate);
     glm::mat4 GetViewMatrix();
-    void ProcessKeyboard(Camera_Movement direction, float deltaTime);
+    void ProcessKeyboard(Camera_Movement direction);
     glm::vec2 GetCameraCord();
     glm::mat4 getProjectionMatrix();
+    void update(GLfloat deltaTime);
     float Zoom;
 private:
     void updateCameraVectors();
@@ -31,4 +32,5 @@ private:
     float MovementSpeed{100.f};
     GLuint width{800}, height{600};
     GLfloat rotate{0.0f};
+    GLfloat deltaTime{0.0f};
 };

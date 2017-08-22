@@ -27,7 +27,7 @@ void Camera::updateCameraVectors()
     Right = glm::normalize(glm::cross(Front, WorldUp));
     Up    = glm::normalize(glm::cross(Right, Front));
 }
-void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
+void Camera::ProcessKeyboard(Camera_Movement direction)
 {
     float velocity = MovementSpeed * deltaTime;
     if (direction == Camera_Movement::LEFT)
@@ -41,4 +41,9 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
     if (direction == Camera_Movement::DOWN)
         Position += Up * velocity;
 }
+void Camera::update(GLfloat deltaTime)
+{
+    this->deltaTime=deltaTime;
+}
+
 
