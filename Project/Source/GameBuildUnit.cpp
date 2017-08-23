@@ -75,11 +75,13 @@ void GameBuildUnit::find_path()
     {
         std::unordered_map<GameGrid::Location, GameGrid::Location> came_from;
         std::unordered_map<GameGrid::Location, double> cost_so_far;
-        checkIfGoalIsFree();
-        a_star_search(*world_grid, id, destination.id, came_from, cost_so_far);
-        path = reconstruct_path(id, destination.id, came_from, (world_grid->width*world_grid->height - world_grid->walls.size()));
-        path.pop_back();
-        world_grid->walls.insert(id);
+        if(world_grid->passable(destination.id))
+        {
+            a_star_search(*world_grid, id, destination.id, came_from, cost_so_far);
+            path = reconstruct_path(id, destination.id, came_from, (world_grid->width*world_grid->height - world_grid->walls.size()));
+            path.pop_back();
+            world_grid->walls.insert(id);
+        }
     }
 }
 

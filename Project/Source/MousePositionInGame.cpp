@@ -1,6 +1,7 @@
 #include <MousePositionInGame.hpp>
 
-MousePositionInGame::MousePositionInGame(std::shared_ptr<Camera> camera) : camera(camera)
+MousePositionInGame::MousePositionInGame(std::shared_ptr<Camera> camera)
+: camera(camera), mousePositionInGame(glm::vec2(-100.0f, -100.0f))
 {
 }
 
@@ -19,3 +20,9 @@ glm::vec2 MousePositionInGame::getMousePositionInGame()
 {
     return mousePositionInGame;
 }
+
+glm::vec2 MousePositionInGame::resetMousePositionPressed()
+{
+    mousePositionInGame = glm::vec2(-100.0f, -100.0f);
+}
+

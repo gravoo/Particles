@@ -59,3 +59,8 @@ glm::vec2 InputHandler::getPositionInGame()
 {
     return mousePositionInGame->getMousePositionInGame();
 }
+
+glm::vec2 InputHandler::resetMouseKeyPressPositionInGame()
+{
+    return mousePositionInGame->resetMousePositionPressed();
+}

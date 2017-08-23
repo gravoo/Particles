@@ -34,8 +34,8 @@ void Game::Init()
     prepare_shaders();
     load_textures();
     prepare_game_level();
-    prepare_build_units();
     units = Units(inputHandler, Levels.back());
+    units.prepare_build_units(hatMan);
     renderer = std::make_unique<SpriteRenderer>(ResourceManager::GetShader("sprite"));
 }
 
@@ -44,10 +44,7 @@ void Game::Render()
     if(state == GameState::GAME_ACTIVE)
     {
         ResourceManager::GetShader("sprite").Use().SetMatrix4("view", camera->GetViewMatrix());
-        for(auto & buildUnit : buildUnits)
-        {
-            buildUnit->Draw(*renderer);
-        }
+        units.render(*renderer);
         Levels.back().Draw(*renderer);
     }
 
@@ -58,29 +55,13 @@ void Game::ProcessInput()
     if (state == GameState::GAME_ACTIVE)
     {
         inputHandler.handlePlayerInput();
-        if(mouseKeys[GLFW_MOUSE_BUTTON_LEFT])
-        {
-            std::cout<<"Left Mouse button is pressed"<<std::endl;
-            processMousePress();
-        }
-        if(mouseKeys[GLFW_MOUSE_BUTTON_RIGHT])
-        {
-            std::cout<<"Right Mouse button is pressed"<<std::endl;
-            for(auto & buildUnit : buildUnits)
-            {
-                buildUnit->setSelectedFlag(false);
-            }
-        }
     }
 }
 
 void Game::UpdateState()
 {
     camera->update(deltaTime);
-    for(auto & buildUnit : buildUnits)
-    {
-        buildUnit->update(deltaTime);
-    }
+    units.update(deltaTime);
 }
 
 void Game::SyncroinzeTimers()
@@ -88,56 +69,6 @@ void Game::SyncroinzeTimers()
     GLfloat currentFrame = glfwGetTime();
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
-}
-
-void Game::DetectMouseClick()
-{
-    for(auto &tile : Levels.back().Bricks)
-    {
-        if (detectMouseClick(tile, mousePosition))
-        {
-            if(Levels.back().grid->passable(tile.id))
-            {
-                for(auto & buildUnit : buildUnits)
-                {
-                    if(buildUnit->selected)
-                    {
-                        buildUnit->setDestinationToTravel(tile);
-                    }
-                }
-
-            }
-        }
-    }
-    for(auto & buildUnit : buildUnits)
-    {
-        if (detectMouseClick(*buildUnit, mousePosition) && !buildUnit->selected)
-        {
-            for(auto & buildUnit : buildUnits)
-            {
-                buildUnit->setSelectedFlag(false);
-            }
-            buildUnit->setSelectedFlag(true);
-        }
-    }
-}
-
-void Game::setMousePosition(GLfloat xpos, GLfloat ypos)
-{
-    if(xpos != lastXpos && ypos != lastYpos)
-    {
-        lastXpos = xpos;
-        lastYpos = ypos;
-        glm::vec4 viewport = glm::vec4(0, 0, width, height);
-        glm::vec3 wincoord = glm::vec3(xpos, height - ypos - 1.0f, 1.0f);
-        glm::vec3 objcoord = glm::unProject(wincoord, camera->GetViewMatrix(), camera->getProjectionMatrix(), viewport);
-        mousePosition=glm::vec2(objcoord.x, objcoord.y);
-    }
-}
-
-void Game::processMousePress()
-{
-    DetectMouseClick();
 }
 
 void Game::load_textures()
@@ -169,15 +100,6 @@ void Game::prepare_game_level()
     Levels.push_back(one);
 }
 
-void Game::prepare_build_units()
-{
-    buildUnits.push_back(std::make_unique<GameBuildUnit>(
-        glm::vec2(0, 0), glm::vec2(60, 40), glm::vec2(1.75f, 2.5f), hatMan, GameGrid::Location{0, 0}, Levels.back().grid));
-    buildUnits.push_back(std::make_unique<GameBuildUnit>(
-        glm::vec2(0, 70), glm::vec2(60, 40), glm::vec2(1.75f, 2.5f), hatMan, GameGrid::Location{0, 1}, Levels.back().grid));
-    buildUnits.push_back(std::make_unique<GameBuildUnit>(
-        glm::vec2(0, 140), glm::vec2(60, 40), glm::vec2(1.75f, 2.5f), hatMan, GameGrid::Location{0, 2}, Levels.back().grid));
-}
 void Game::unsetKeyInput(int key)
 {
     inputHandler.unsetKeyboardKey(key);
@@ -189,12 +111,9 @@ void Game::setKeyInput(int key)
 void Game::setMouseInput(int key, GLfloat xpos, GLfloat ypos)
 {
     inputHandler.setMouseKey(key, xpos, ypos);
-    mouseKeys[key] = GL_TRUE;
-    setMousePosition(xpos, ypos);
 }
 void Game::unsetMouseInput(int key)
 {
     inputHandler.unsetMousedKey(key);
-    mouseKeys[key] = GL_FALSE;
 }
 

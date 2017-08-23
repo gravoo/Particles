@@ -20,6 +20,8 @@ public:
     void setMouseKey(int key, GLfloat xpos, GLfloat ypos);
     void unsetMousedKey(int key);
     glm::vec2 getPositionInGame();
+    glm::vec2 resetMouseKeyPressPositionInGame();
+
 private:
     GLboolean keys[1024];
     GLboolean mouse[9];
