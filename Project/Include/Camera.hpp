@@ -18,6 +18,9 @@ public:
     void ProcessKeyboard(Camera_Movement direction);
     glm::vec2 GetCameraCord();
     glm::mat4 getProjectionMatrix();
+    glm::vec4 getViewport();
+    GLuint getViewWidth();
+    GLuint getViewHeight();
     void update(GLfloat deltaTime);
     float Zoom;
 private:

@@ -1,6 +1,7 @@
 #include <Game.hpp>
 #include <ResourceManager.hpp>
 #include <iostream>
+
 namespace
 {
 
@@ -20,7 +21,11 @@ std::basic_iostream<char>::basic_ostream& operator<<(std::basic_iostream<char>::
 
 }
 Game::Game(GLuint width, GLuint height)
-: state(GameState::GAME_ACTIVE), width(width), height(height), camera(std::make_shared<Camera>(glm::vec3(0.0f, 0.0f, 3.0f), width, height, 0.0f)), inputHandler(std::make_shared<MoveCameraUp>(camera), std::make_shared<MoveCameraDown>(camera), std::make_shared<MoveCameraLeft>(camera), std::make_shared<MoveCameraRight>(camera))
+:   state(GameState::GAME_ACTIVE), width(width), height(height),
+    camera(std::make_shared<Camera>(glm::vec3(0.0f, 0.0f, 3.0f), width, height, 0.0f)),
+    inputHandler(std::make_shared<MoveCameraUp>(camera), std::make_shared<MoveCameraDown>(camera),
+                 std::make_shared<MoveCameraLeft>(camera), std::make_shared<MoveCameraRight>(camera),
+                 std::make_shared<MousePositionInGame>(camera))
 {
 }
 
@@ -30,6 +35,7 @@ void Game::Init()
     load_textures();
     prepare_game_level();
     prepare_build_units();
+    units = Units(inputHandler, Levels.back());
     renderer = std::make_unique<SpriteRenderer>(ResourceManager::GetShader("sprite"));
 }
 
@@ -51,7 +57,7 @@ void Game::ProcessInput()
 {
     if (state == GameState::GAME_ACTIVE)
     {
-        inputHandler.handleKeyboardInput();
+        inputHandler.handlePlayerInput();
         if(mouseKeys[GLFW_MOUSE_BUTTON_LEFT])
         {
             std::cout<<"Left Mouse button is pressed"<<std::endl;
@@ -182,11 +188,13 @@ void Game::setKeyInput(int key)
 }
 void Game::setMouseInput(int key, GLfloat xpos, GLfloat ypos)
 {
+    inputHandler.setMouseKey(key, xpos, ypos);
     mouseKeys[key] = GL_TRUE;
     setMousePosition(xpos, ypos);
 }
 void Game::unsetMouseInput(int key)
 {
+    inputHandler.unsetMousedKey(key);
     mouseKeys[key] = GL_FALSE;
 }
 

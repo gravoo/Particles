@@ -9,6 +9,9 @@
 #include <GameBuildUnit.hpp>
 #include <vector>
 #include <InputHandler.hpp>
+#include <Units.hpp>
+#include <MousePositionInGame.hpp>
+
 enum class GameState {
     GAME_ACTIVE,
     GAME_MENU,
@@ -51,4 +54,5 @@ private:
     glm::vec2 mousePosition;
     GLfloat lastXpos{0.0f}, lastYpos{0.0f};
     std::vector<Texture> hatMan;
+    Units units;
 };

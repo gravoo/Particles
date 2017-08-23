@@ -46,4 +46,19 @@ void Camera::update(GLfloat deltaTime)
     this->deltaTime=deltaTime;
 }
 
+glm::vec4 Camera::getViewport()
+{
+    return glm::vec4(0, 0, width, height);
+}
+
+GLuint Camera::getViewHeight()
+{
+    return height;
+}
+
+GLuint Camera::getViewWidth()
+{
+    return width;
+}
+
 
