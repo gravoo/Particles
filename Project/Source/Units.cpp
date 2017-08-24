@@ -1,8 +1,10 @@
 #include<Units.hpp>
-#include<iostream>
 #include<DeselectUnit.hpp>
 #include<InputHandler.hpp>
-#include <cstddef>
+#include<GameBuildUnit.hpp>
+#include<Texture.hpp>
+#include<SpriteRenderer.hpp>
+
 namespace
 {
 GLboolean detectMouseClick(GameObject &unit, glm::vec2 mouse) // AABB - AABB collision

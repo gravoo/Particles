@@ -1,7 +1,9 @@
 #pragma once
-#include<Camera.hpp>
-#include<memory>
+#include <memory>
+#include <glm/glm.hpp>
+#include <glad/glad.h>
 
+class Camera;
 class MousePositionInGame
 {
 public:

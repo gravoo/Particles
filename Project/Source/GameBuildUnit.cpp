@@ -1,5 +1,6 @@
-#include<GameBuildUnit.hpp>
-#include<iostream>
+#include <GameBuildUnit.hpp>
+#include <GameLevel.hpp>
+#include <iostream>
 namespace
 {
 std::basic_iostream<char>::basic_ostream& operator<<(std::basic_iostream<char>::basic_ostream& out, std::tuple<int,int> loc) {
@@ -45,12 +46,6 @@ void GameBuildUnit::update(GLfloat elapsedTime)
     }
 }
 
-bool GameBuildUnit::setSelectedFlag(bool selected)
-{
-    this->selected = selected;
-    return selected;
-}
-
 void GameBuildUnit::setDestinationToTravel(GameObject &gameObject)
 {
     if(isSelected)
@@ -88,11 +83,3 @@ void GameBuildUnit::find_path()
     }
 }
 
-void GameBuildUnit::checkIfGoalIsFree()
-{
-    if(!world_grid->passable(destination.id))
-    {
-        auto tmp_goal = world_grid->neighbors(destination.id);
-        destination.id = tmp_goal.front();
-    }
-}

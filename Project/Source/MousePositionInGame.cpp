@@ -1,4 +1,5 @@
 #include <MousePositionInGame.hpp>
+#include <Camera.hpp>
 
 MousePositionInGame::MousePositionInGame(std::shared_ptr<Camera> camera)
 : camera(camera), mousePositionInGame(glm::vec2(-100.0f, -100.0f))

@@ -1,8 +1,12 @@
 #pragma once
 
 #include <GameObject.hpp>
-#include <GameLevel.hpp>
 #include <memory>
+#include <glm/glm.hpp>
+#include <glad/glad.h>
+
+class Texture;
+class GridWithWeights;
 
 class GameBuildUnit : public GameObject
 {
@@ -10,14 +14,11 @@ public:
     GameBuildUnit(glm::vec2 pos, glm::vec2 size, glm::vec2 velocity, std::vector<Texture> sprites,
                   GameGrid::Location id, std::shared_ptr<GridWithWeights> grid);
     void update(GLfloat elapsedTime);
-    bool setSelectedFlag(bool selected);
     void setDestinationToTravel(GameObject &gameObject);
-    bool selected{false};
 private:
     void changeSprite();
     void find_path();
     glm::vec2 getDirectionOfMovement();
-    void checkIfGoalIsFree();
     GameObject destination;
     GLfloat updateTime{0.0f};
     std::vector<GameGrid::Location> path;

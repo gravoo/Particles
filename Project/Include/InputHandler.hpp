@@ -1,7 +1,9 @@
 #pragma once
-#include<ICommand.hpp>
-#include<MousePositionInGame.hpp>
+#include <MousePositionInGame.hpp>
+#include <glm/glm.hpp>
+#include <glad/glad.h>
 
+class ICommand;
 class InputHandler
 {
 public:

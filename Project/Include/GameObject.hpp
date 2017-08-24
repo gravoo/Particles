@@ -1,9 +1,9 @@
 #pragma once
-#include<glm/gtc/matrix_transform.hpp>
-#include<glm/glm.hpp>
-#include<Texture.hpp>
-#include<SpriteRenderer.hpp>
-#include<GameGrid.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/glm.hpp>
+#include <Texture.hpp>
+#include <SpriteRenderer.hpp>
+#include <GameGrid.hpp>
 
 class GameObject
 {

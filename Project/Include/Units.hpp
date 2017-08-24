@@ -1,13 +1,14 @@
 #pragma once
-#include<GameBuildUnit.hpp>
 #include<GameLevel.hpp>
 #include<vector>
 #include<memory>
-#include<Texture.hpp>
 #include<GameGrid.hpp>
-#include<SpriteRenderer.hpp>
 
 class InputHandler;
+class GameBuildUnit;
+class GameObject;
+class Texture;
+class SpriteRenderer;
 
 class Units
 {
