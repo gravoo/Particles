@@ -53,8 +53,11 @@ bool GameBuildUnit::setSelectedFlag(bool selected)
 
 void GameBuildUnit::setDestinationToTravel(GameObject &gameObject)
 {
-    destination = gameObject;
-    find_path();
+    if(isSelected)
+    {
+        destination = gameObject;
+        find_path();
+    }
 }
 
 glm::vec2 GameBuildUnit::getDirectionOfMovement()

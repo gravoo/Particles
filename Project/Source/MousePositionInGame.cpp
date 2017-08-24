@@ -21,7 +21,7 @@ glm::vec2 MousePositionInGame::getMousePositionInGame()
     return mousePositionInGame;
 }
 
-glm::vec2 MousePositionInGame::resetMousePositionPressed()
+void MousePositionInGame::resetMousePositionPressed()
 {
     mousePositionInGame = glm::vec2(-100.0f, -100.0f);
 }

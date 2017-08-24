@@ -1,16 +1,17 @@
 #include <Game.hpp>
 #include <ResourceManager.hpp>
 #include <iostream>
+#include <MoveCameraUp.hpp>
+#include <MoveCameraDown.hpp>
+#include <MoveCameraLeft.hpp>
+#include <MoveCameraRight.hpp>
+#include <Camera.hpp>
+#include <SpriteRenderer.hpp>
+#include <GLFW/glfw3.h>
+#include <InputHandler.hpp>
 
 namespace
 {
-
-GLboolean detectMouseClick(GameObject &one, glm::vec2 &two) // AABB - AABB collision
-{
-    bool collisionX = one.Position.x + one.Size.x >= two.x && two.x >= one.Position.x;
-    bool collisionY = one.Position.y + one.Size.y >= two.y && two.y >= one.Position.y;
-    return collisionX && collisionY;
-}
 
 std::basic_iostream<char>::basic_ostream& operator<<(std::basic_iostream<char>::basic_ostream& out, std::tuple<int,int> loc) {
   int x, y;
@@ -23,9 +24,9 @@ std::basic_iostream<char>::basic_ostream& operator<<(std::basic_iostream<char>::
 Game::Game(GLuint width, GLuint height)
 :   state(GameState::GAME_ACTIVE), width(width), height(height),
     camera(std::make_shared<Camera>(glm::vec3(0.0f, 0.0f, 3.0f), width, height, 0.0f)),
-    inputHandler(std::make_shared<MoveCameraUp>(camera), std::make_shared<MoveCameraDown>(camera),
+    inputHandler(std::make_shared<InputHandler>(std::make_shared<MoveCameraUp>(camera), std::make_shared<MoveCameraDown>(camera),
                  std::make_shared<MoveCameraLeft>(camera), std::make_shared<MoveCameraRight>(camera),
-                 std::make_shared<MousePositionInGame>(camera))
+                 std::make_shared<MousePositionInGame>(camera)))
 {
 }
 
@@ -54,7 +55,7 @@ void Game::ProcessInput()
 {
     if (state == GameState::GAME_ACTIVE)
     {
-        inputHandler.handlePlayerInput();
+        inputHandler->handlePlayerInput();
     }
 }
 
@@ -102,18 +103,18 @@ void Game::prepare_game_level()
 
 void Game::unsetKeyInput(int key)
 {
-    inputHandler.unsetKeyboardKey(key);
+    inputHandler->unsetKeyboardKey(key);
 }
 void Game::setKeyInput(int key)
 {
-    inputHandler.setKeyboardKey(key);
+    inputHandler->setKeyboardKey(key);
 }
 void Game::setMouseInput(int key, GLfloat xpos, GLfloat ypos)
 {
-    inputHandler.setMouseKey(key, xpos, ypos);
+    inputHandler->setMouseKey(key, xpos, ypos);
 }
 void Game::unsetMouseInput(int key)
 {
-    inputHandler.unsetMousedKey(key);
+    inputHandler->unsetMousedKey(key);
 }
 

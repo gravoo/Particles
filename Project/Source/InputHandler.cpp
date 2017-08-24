@@ -1,5 +1,12 @@
-#include <InputHandler.hpp>
-#include <cassert>
+#include<InputHandler.hpp>
+#include<MoveCameraUp.hpp>
+#include<MoveCameraDown.hpp>
+#include<MoveCameraLeft.hpp>
+#include<MoveCameraRight.hpp>
+#include<DeselectUnit.hpp>
+#include<GLFW/glfw3.h>
+#include<iostream>
+
 InputHandler::InputHandler(std::shared_ptr<ICommand> buttonUp,
                  std::shared_ptr<ICommand> buttonDown,
                  std::shared_ptr<ICommand> buttonLeft,
@@ -32,6 +39,10 @@ void InputHandler::handlePlayerInput()
     {
         mousePositionInGame->setMousePosition(currentMousePosition);
     }
+    if(mouse[GLFW_MOUSE_BUTTON_RIGHT])
+    {
+        rightMouseClick->execute();
+    }
 
 }
 
@@ -60,7 +71,12 @@ glm::vec2 InputHandler::getPositionInGame()
     return mousePositionInGame->getMousePositionInGame();
 }
 
-glm::vec2 InputHandler::resetMouseKeyPressPositionInGame()
+void InputHandler::resetMouseKeyPressPositionInGame()
 {
-    return mousePositionInGame->resetMousePositionPressed();
+     mousePositionInGame->resetMousePositionPressed();
+}
+
+void InputHandler::setDeselectUnitCommand(std::shared_ptr<ICommand> rightClick)
+{
+    rightMouseClick = rightClick;
 }

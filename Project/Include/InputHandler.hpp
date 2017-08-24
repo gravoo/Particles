@@ -1,8 +1,5 @@
 #pragma once
-#include<MoveCameraUp.hpp>
-#include<MoveCameraDown.hpp>
-#include<MoveCameraLeft.hpp>
-#include<MoveCameraRight.hpp>
+#include<ICommand.hpp>
 #include<MousePositionInGame.hpp>
 
 class InputHandler
@@ -19,8 +16,9 @@ public:
     void unsetKeyboardKey(int key);
     void setMouseKey(int key, GLfloat xpos, GLfloat ypos);
     void unsetMousedKey(int key);
+    void setDeselectUnitCommand(std::shared_ptr<ICommand> rightClick);
     glm::vec2 getPositionInGame();
-    glm::vec2 resetMouseKeyPressPositionInGame();
+    void resetMouseKeyPressPositionInGame();
 
 private:
     GLboolean keys[1024];
@@ -30,5 +28,6 @@ private:
     std::shared_ptr<ICommand> buttonA;
     std::shared_ptr<ICommand> buttonD;
     std::shared_ptr<MousePositionInGame> mousePositionInGame;
+    std::shared_ptr<ICommand> rightMouseClick;
     glm::vec2 currentMousePosition;
 };

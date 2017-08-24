@@ -1,16 +1,14 @@
 #pragma once
 #include<ICommand.hpp>
-#include<Camera.hpp>
 #include<memory>
+
+class Camera;
+
 class MoveCameraRight: public ICommand
 {
 public:
-    MoveCameraRight(std::shared_ptr<Camera> camera) : camera(camera)
-    {}
-    void execute( ) override
-    {
-        camera->ProcessKeyboard(Camera_Movement::RIGHT);
-    };
+    MoveCameraRight(std::shared_ptr<Camera> camera);
+    void execute( ) override;
 private:
     std::shared_ptr<Camera> camera;
 };

@@ -1,5 +1,8 @@
 #include<Units.hpp>
 #include<iostream>
+#include<DeselectUnit.hpp>
+#include<InputHandler.hpp>
+#include <cstddef>
 namespace
 {
 GLboolean detectMouseClick(GameObject &unit, glm::vec2 mouse) // AABB - AABB collision
@@ -9,20 +12,20 @@ GLboolean detectMouseClick(GameObject &unit, glm::vec2 mouse) // AABB - AABB col
     return collisionX && collisionY;
 }
 }
-Units::Units(InputHandler &inputHandler, GameLevel &gameLevel)
+Units::Units(std::shared_ptr<InputHandler> inputHandler, GameLevel &gameLevel)
 : inputHandler(inputHandler), gameLevel(gameLevel)
 {
-
+    inputHandler->setDeselectUnitCommand(std::make_shared<DeselectUnit>(selectedUnit));
 }
 
 void Units::update(GLfloat deltaTime)
 {
     selectedUnit = getSelectedUnit();
     selectedTile = getSelectedTile();
-    inputHandler.resetMouseKeyPressPositionInGame();
+    inputHandler->resetMouseKeyPressPositionInGame();
     if(selectedUnit)
     {
-       selectedUnit->setDestinationToTravel(*selectedTile);
+        selectedUnit->setDestinationToTravel(*selectedTile);
     }
     for(auto & buildUnit : buildUnits)
     {
@@ -44,15 +47,17 @@ void Units::prepare_build_units(std::vector<Texture> texture)
     buildUnits.push_back(std::make_shared<GameBuildUnit>(
         glm::vec2(0, 0), glm::vec2(60, 40), glm::vec2(1.75f, 2.5f), texture, GameGrid::Location{0, 0}, gameLevel.grid));
     buildUnits.push_back(std::make_shared<GameBuildUnit>(
-        glm::vec2(0, 80), glm::vec2(60, 40), glm::vec2(1.75f, 2.5f), texture, GameGrid::Location{0, 0}, gameLevel.grid));
+        glm::vec2(0, 80), glm::vec2(60, 40), glm::vec2(1.75f, 2.5f), texture, GameGrid::Location{0, 1}, gameLevel.grid));
 }
 
 std::shared_ptr<GameBuildUnit> Units::getSelectedUnit()
 {
     for(auto & buildUnit : buildUnits)
     {
-        if(detectMouseClick(*buildUnit, inputHandler.getPositionInGame()))
+        if(detectMouseClick(*buildUnit, inputHandler->getPositionInGame()))
         {
+            buildUnit->isSelected = true;
+            inputHandler->setDeselectUnitCommand(std::make_shared<DeselectUnit>(buildUnit));
             return buildUnit;
         }
     }
@@ -62,7 +67,7 @@ std::shared_ptr<GameObject> Units::getSelectedTile()
 {
     for(auto &tile : gameLevel.Bricks)
     {
-        if(detectMouseClick(tile, inputHandler.getPositionInGame()))
+        if(detectMouseClick(tile, inputHandler->getPositionInGame()))
         {
             return std::make_shared<GameObject>(tile);
         }

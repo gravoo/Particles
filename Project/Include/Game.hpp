@@ -1,23 +1,23 @@
 #pragma once
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <SpriteRenderer.hpp>
 #include <memory>
 #include <GameLevel.hpp>
 #include <GameObject.hpp>
-#include <Camera.hpp>
 #include <GameBuildUnit.hpp>
 #include <vector>
-#include <InputHandler.hpp>
 #include <Units.hpp>
 #include <MousePositionInGame.hpp>
+#include <DeselectUnit.hpp>
 
 enum class GameState {
     GAME_ACTIVE,
     GAME_MENU,
     GAME_WIN
 };
-
+class Camera;
+class SpriteRenderer;
+class Texture;
+class InputHandler;
 class Game
 {
 public:
@@ -42,7 +42,7 @@ private:
     GLuint width, height;
     std::unique_ptr<SpriteRenderer> renderer;
     std::shared_ptr<Camera> camera;
-    InputHandler inputHandler;
+    std::shared_ptr<InputHandler> inputHandler;
     GLfloat deltaTime{0.0f};
     GLfloat lastFrame{0.0f};
     std::vector<Texture> hatMan;
