@@ -82,4 +82,14 @@ void GameBuildUnit::find_path()
         }
     }
 }
+void GameBuildUnit::selectUnit()
+{
+    isSelected = true;
+}
+
+void GameBuildUnit::deselectUnit()
+{
+    isSelected = false;
+}
+
 

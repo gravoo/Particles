@@ -15,6 +15,8 @@ public:
                   GameGrid::Location id, std::shared_ptr<GridWithWeights> grid);
     void update(GLfloat elapsedTime);
     void setDestinationToTravel(GameObject &gameObject);
+    void selectUnit();
+    void deselectUnit();
 private:
     void changeSprite();
     void find_path();

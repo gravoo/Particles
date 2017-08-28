@@ -9,9 +9,14 @@ namespace
 {
 GLboolean detectMouseClick(GameObject &unit, glm::vec2 mouse) // AABB - AABB collision
 {
-    bool collisionX = unit.Position.x + unit.Size.x >= mouse.x && mouse.x >= unit.Position.x;
-    bool collisionY = unit.Position.y + unit.Size.y >= mouse.y && mouse.y >= unit.Position.y;
-    return collisionX && collisionY;
+    if(mouse.x>=0&&mouse.y>=0)
+    {
+        std::cout<<mouse.y<<std::endl;
+        bool collisionX = unit.Position.x + unit.Size.x >= mouse.x && mouse.x >= unit.Position.x;
+        bool collisionY = unit.Position.y + unit.Size.y >= mouse.y && mouse.y >= unit.Position.y;
+        return collisionX && collisionY;
+    }
+    return false;
 }
 }
 Units::Units(std::shared_ptr<InputHandler> inputHandler, GameLevel &gameLevel)
@@ -58,7 +63,7 @@ std::shared_ptr<GameBuildUnit> Units::getSelectedUnit()
     {
         if(detectMouseClick(*buildUnit, inputHandler->getPositionInGame()))
         {
-            buildUnit->isSelected = true;
+            buildUnit->selectUnit();
             inputHandler->setDeselectUnitCommand(std::make_shared<DeselectUnit>(buildUnit));
             return buildUnit;
         }

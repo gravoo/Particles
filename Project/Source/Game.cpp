@@ -9,6 +9,7 @@
 #include <SpriteRenderer.hpp>
 #include <GLFW/glfw3.h>
 #include <InputHandler.hpp>
+#include <GameGUI.hpp>
 
 namespace
 {
@@ -38,6 +39,7 @@ void Game::Init()
     units = Units(inputHandler, Levels.back());
     units.prepare_build_units(hatMan);
     renderer = std::make_unique<SpriteRenderer>(ResourceManager::GetShader("sprite"));
+    gameGUI = std::make_shared<GameGUI>(camera);
 }
 
 void Game::Render()
@@ -45,6 +47,7 @@ void Game::Render()
     if(state == GameState::GAME_ACTIVE)
     {
         ResourceManager::GetShader("sprite").Use().SetMatrix4("view", camera->GetViewMatrix());
+        gameGUI->draw(*renderer);
         units.render(*renderer);
         Levels.back().Draw(*renderer);
     }

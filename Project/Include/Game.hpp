@@ -18,6 +18,8 @@ class Camera;
 class SpriteRenderer;
 class Texture;
 class InputHandler;
+class GameGUI;
+
 class Game
 {
 public:
@@ -47,4 +49,5 @@ private:
     GLfloat lastFrame{0.0f};
     std::vector<Texture> hatMan;
     Units units;
+    std::shared_ptr<GameGUI> gameGUI;
 };

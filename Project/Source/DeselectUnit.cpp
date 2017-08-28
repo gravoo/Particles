@@ -9,7 +9,7 @@ void DeselectUnit::execute()
 {
     if(selectedUnit)
     {
-        selectedUnit->isSelected = false;
+        selectedUnit->deselectUnit();
     }
 }
 

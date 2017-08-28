@@ -61,4 +61,8 @@ GLuint Camera::getViewWidth()
     return width;
 }
 
+glm::vec2 Camera::get2DCameraPosition()
+{
+    return glm::vec2(Position.x, Position.y);
+}
 

@@ -19,6 +19,7 @@ public:
     glm::vec2 GetCameraCord();
     glm::mat4 getProjectionMatrix();
     glm::vec4 getViewport();
+    glm::vec2 get2DCameraPosition();
     GLuint getViewWidth();
     GLuint getViewHeight();
     void update(GLfloat deltaTime);
