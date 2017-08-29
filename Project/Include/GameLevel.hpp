@@ -2,12 +2,12 @@
 #include <vector>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
-#include <SpriteRenderer.hpp>
-#include <GameObject.hpp>
 #include <ResourceManager.hpp>
-#include <GameGrid.hpp>
 #include <memory>
 
+class GridWithWeights;
+class GameObject;
+class SpriteRenderer;
 class GameLevel
 {
 public:

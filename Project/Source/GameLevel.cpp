@@ -1,7 +1,11 @@
 #include <GameLevel.hpp>
+#include <GameGrid.hpp>
+#include <GameObject.hpp>
+#include <SpriteRenderer.hpp>
 #include <fstream>
 #include <sstream>
 #include <iostream>
+
 void GameLevel::Load(const GLchar *file, GLuint levelWidth, GLuint levelHeight)
 {
     this->Bricks.clear();

@@ -39,7 +39,8 @@ void Game::Init()
     units = Units(inputHandler, Levels.back());
     units.prepare_build_units(hatMan);
     renderer = std::make_unique<SpriteRenderer>(ResourceManager::GetShader("sprite"));
-    gameGUI = std::make_shared<GameGUI>(camera);
+    gameGUI = std::make_shared<GameGUI>(camera, ResourceManager::GetTexture("gameGui"),
+                                        Levels.back().grid, ResourceManager::GetTexture("block"));
 }
 
 void Game::Render()
@@ -83,6 +84,7 @@ void Game::load_textures()
     ResourceManager::LoadTexture("../Textures/Hat_man/Walk/Hat_man2.png", GL_TRUE, "hat_man2");
     ResourceManager::LoadTexture("../Textures/Hat_man/Walk/Hat_man3.png", GL_TRUE, "hat_man3");
     ResourceManager::LoadTexture("../Textures/Hat_man/Walk/Hat_man4.png", GL_TRUE, "hat_man4");
+    ResourceManager::LoadTexture("../Textures/GameGui.png", GL_TRUE, "gameGui");
     hatMan.push_back(ResourceManager::GetTexture("hat_man1"));
     hatMan.push_back(ResourceManager::GetTexture("hat_man2"));
     hatMan.push_back(ResourceManager::GetTexture("hat_man3"));
