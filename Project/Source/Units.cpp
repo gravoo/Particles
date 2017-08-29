@@ -11,7 +11,6 @@ GLboolean detectMouseClick(GameObject &unit, glm::vec2 mouse) // AABB - AABB col
 {
     if(mouse.x>=0&&mouse.y>=0)
     {
-        std::cout<<mouse.y<<std::endl;
         bool collisionX = unit.Position.x + unit.Size.x >= mouse.x && mouse.x >= unit.Position.x;
         bool collisionY = unit.Position.y + unit.Size.y >= mouse.y && mouse.y >= unit.Position.y;
         return collisionX && collisionY;

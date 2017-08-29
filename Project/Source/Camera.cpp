@@ -1,6 +1,4 @@
 #include <Camera.hpp>
-#include <iostream>
-#include<cassert>
 
 Camera::Camera( glm::vec3 position, GLuint width, GLuint height,  GLfloat rotate)
         : Position(position), width(width), height(height), rotate(rotate)

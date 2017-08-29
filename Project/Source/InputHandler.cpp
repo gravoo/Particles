@@ -1,11 +1,10 @@
-#include<InputHandler.hpp>
-#include<MoveCameraUp.hpp>
-#include<MoveCameraDown.hpp>
-#include<MoveCameraLeft.hpp>
-#include<MoveCameraRight.hpp>
-#include<DeselectUnit.hpp>
-#include<GLFW/glfw3.h>
-#include<iostream>
+#include <InputHandler.hpp>
+#include <MoveCameraUp.hpp>
+#include <MoveCameraDown.hpp>
+#include <MoveCameraLeft.hpp>
+#include <MoveCameraRight.hpp>
+#include <DeselectUnit.hpp>
+#include <GLFW/glfw3.h>
 
 InputHandler::InputHandler(std::shared_ptr<ICommand> buttonUp,
                  std::shared_ptr<ICommand> buttonDown,

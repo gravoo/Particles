@@ -2,7 +2,6 @@
 #include <Camera.hpp>
 #include <SpriteRenderer.hpp>
 #include <GameGrid.hpp>
-#include <iostream>
 
 GameGUI::GameGUI(std::shared_ptr<Camera> camera, Texture sprite, std::shared_ptr<GridWithWeights> grid, Texture block)
 : camera(camera), sprite(sprite), grid(grid), block(block)
