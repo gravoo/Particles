@@ -1,7 +1,8 @@
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 3.5)
 ##Project name
 project (Particles)
-set(CMAKE_CXX_FLAGS "-std=c++17 -g -Wall")
+add_compile_options(-Wall -Wextra -Wpedantic)
+set(CMAKE_CXX_FLAGS "-std=c++17 ")
 
 #Include files for project
 include_directories(${PROJECT_SOURCE_DIR} Include)
