@@ -41,7 +41,7 @@ void Game::Init()
     units.prepare_build_units(hatMan);
     renderer = std::make_unique<SpriteRenderer>(ResourceManager::GetShader("sprite"));
     gameGUI = std::make_shared<GameGUI>( std::make_shared<MiniMap>(Levels.back().grid, camera, ResourceManager::GetTexture("block")),
-                                        std::make_shared<GameObject>(glm::vec2(0, height/3.0f), glm::vec2(width, height/3.0f),
+                                        std::make_shared<GameObject>(glm::vec2(0, 2*height/3.0f), glm::vec2(width, height/3.0f),
                                          ResourceManager::GetTexture("gameGui")
                                         ));
 }
