@@ -10,6 +10,7 @@
 #include <GLFW/glfw3.h>
 #include <InputHandler.hpp>
 #include <GameGUI.hpp>
+#include <MiniMap.hpp>
 
 namespace
 {
@@ -40,7 +41,7 @@ void Game::Init()
     units.prepare_build_units(hatMan);
     renderer = std::make_unique<SpriteRenderer>(ResourceManager::GetShader("sprite"));
     gameGUI = std::make_shared<GameGUI>(camera, ResourceManager::GetTexture("gameGui"),
-                                        Levels.back().grid, ResourceManager::GetTexture("block"));
+                                        std::make_shared<MiniMap>(Levels.back().grid, camera, ResourceManager::GetTexture("block")));
 }
 
 void Game::Render()

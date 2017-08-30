@@ -7,18 +7,17 @@
 
 class Camera;
 class SpriteRenderer;
-class GridWithWeights;
+class MiniMap;
+
 class GameGUI
 {
 public:
-    GameGUI(std::shared_ptr<Camera> camera, Texture sprite, std::shared_ptr<GridWithWeights> grid, Texture block);
+    GameGUI(std::shared_ptr<Camera> camera, Texture sprite, std::shared_ptr<MiniMap> miniMap);
     void draw(SpriteRenderer &renderer);
 private:
-    void prepareMiniMap(SpriteRenderer &renderer);
     glm::vec3   color{1.0f};
     GLfloat     rotation{0.0f};
     Texture   sprite;
     std::shared_ptr<Camera> camera;
-    std::shared_ptr<GridWithWeights> grid;
-    Texture block;
+    std::shared_ptr<MiniMap> miniMap;
 };
