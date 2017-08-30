@@ -64,3 +64,8 @@ glm::vec2 Camera::get2DCameraPosition()
     return glm::vec2(Position.x, Position.y);
 }
 
+void Camera::setRotations(GLfloat rotate)
+{
+    this->rotate = rotate;
+}
+

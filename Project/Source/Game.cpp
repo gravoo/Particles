@@ -40,16 +40,21 @@ void Game::Init()
     units = Units(inputHandler, Levels.back());
     units.prepare_build_units(hatMan);
     renderer = std::make_unique<SpriteRenderer>(ResourceManager::GetShader("sprite"));
-    gameGUI = std::make_shared<GameGUI>(camera, ResourceManager::GetTexture("gameGui"),
-                                        std::make_shared<MiniMap>(Levels.back().grid, camera, ResourceManager::GetTexture("block")));
+    gameGUI = std::make_shared<GameGUI>( std::make_shared<MiniMap>(Levels.back().grid, camera, ResourceManager::GetTexture("block")),
+                                        std::make_shared<GameObject>(glm::vec2(0, height/3.0f), glm::vec2(width, height/3.0f),
+                                         ResourceManager::GetTexture("gameGui")
+                                        ));
 }
 
 void Game::Render()
 {
     if(state == GameState::GAME_ACTIVE)
     {
+        camera->setRotations(0.0f);
         ResourceManager::GetShader("sprite").Use().SetMatrix4("view", camera->GetViewMatrix());
         gameGUI->draw(*renderer);
+        camera->setRotations(0.30f);
+        ResourceManager::GetShader("sprite").Use().SetMatrix4("view", camera->GetViewMatrix());
         units.render(*renderer);
         Levels.back().Draw(*renderer);
     }
@@ -68,6 +73,7 @@ void Game::UpdateState()
 {
     camera->update(deltaTime);
     units.update(deltaTime);
+    gameGUI->update(camera->get2DCameraPosition() + glm::vec2(0, 2*height/3.0f));
 }
 
 void Game::SyncroinzeTimers()

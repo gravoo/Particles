@@ -23,6 +23,7 @@ public:
     GLuint getViewWidth();
     GLuint getViewHeight();
     void update(GLfloat deltaTime);
+    void setRotations(GLfloat rotate);
     float Zoom;
 private:
     void updateCameraVectors();

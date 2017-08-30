@@ -25,8 +25,7 @@ void MiniMap::draw(SpriteRenderer & renderer)
             {
                Color = glm::vec3(1.0f, 0.0f, 0.0f);
             }
-            glm::vec2 pos = glm::vec2(Size.x * j, Size.y * i) + glm::vec2(10, 2.05*camera->getViewHeight()/3.0f);
-            Position = pos + camera->get2DCameraPosition();
+            Position = glm::vec2(Size.x * j, Size.y * i) + glm::vec2(10, 2.05*camera->getViewHeight()/3.0f) + camera->get2DCameraPosition();
             Draw(renderer);
         }
     }

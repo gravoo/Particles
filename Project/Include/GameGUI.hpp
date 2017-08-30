@@ -8,16 +8,15 @@
 class Camera;
 class SpriteRenderer;
 class MiniMap;
+class GameObject;
 
 class GameGUI
 {
 public:
-    GameGUI(std::shared_ptr<Camera> camera, Texture sprite, std::shared_ptr<MiniMap> miniMap);
+    GameGUI(std::shared_ptr<MiniMap> miniMap, std::shared_ptr<GameObject> background);
     void draw(SpriteRenderer &renderer);
+    void update(glm::vec2 cameraCord);
 private:
-    glm::vec3   color{1.0f};
-    GLfloat     rotation{0.0f};
-    Texture   sprite;
-    std::shared_ptr<Camera> camera;
     std::shared_ptr<MiniMap> miniMap;
+    std::shared_ptr<GameObject> background;
 };
